@@ -16,7 +16,7 @@ Currently, CMake is used.
 |---------|--------------|---------------------|-------|
 | CLK | Yes | Yes | 25 MHz HSE w/RCC. See ThermoSoft.ioc for frequencies set. |
 | ETH | Partial | Yes | Still needs to be piped in. |
-| MAX31856 | No | Yes | Library imported, needs to be packed into a struct and sent over ETH. Needs to be forked for the H5. |
+| MAX31856 | No | Yes | Library imported, needs to be packed into a struct and sent over ETH. |
 | CAN-FD | No | No | May not be implemented at this time. |
 | FMAC | No | No | Enabled but may not be needed. Useful for hardware-accelered FIR filters. |
 | CI | No | No | Just a simple CMake build, shouldn't be too hard. |
