@@ -91,8 +91,9 @@ extern "C" {
 /** @defgroup SYSTEM_LL_SBS_EC_CS1 SBS Vdd compensation cell Code selection
  * @{
  */
-#define LL_SBS_VDD_CELL_CODE 0x0UL /*!< VDD I/Os code from the cell (available in the SBS_CCVALR)  \
-                                    */
+#define LL_SBS_VDD_CELL_CODE                                                                       \
+  0x0UL /*!< VDD I/Os code from the cell (available in the SBS_CCVALR)                             \
+         */
 #define LL_SBS_VDD_REGISTER_CODE                                                                   \
   SBS_CCCSR_CS1 /*!< VDD I/Os code from the SBS compensation cell code register (SBS_CCSWCR) */
 /**

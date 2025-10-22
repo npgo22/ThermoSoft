@@ -96,8 +96,9 @@
 #define ARM_PMU_L1D_CACHE_MISS_RD  0x0039 /*!< Level 1 data cache read miss */
 #define ARM_PMU_OP_COMPLETE        0x003A /*!< Operation retired */
 #define ARM_PMU_OP_SPEC            0x003B /*!< Operation speculatively executed */
-#define ARM_PMU_STALL              0x003C /*!< Stall cycle for instruction or operation not sent for execution \
-                                           */
+#define ARM_PMU_STALL                                                                              \
+  0x003C /*!< Stall cycle for instruction or operation not sent for execution                      \
+          */
 #define ARM_PMU_STALL_OP_BACKEND                                                                   \
   0x003D /*!< Stall cycle for instruction or operation not sent for execution due to pipeline      \
             backend */
@@ -114,8 +115,9 @@
   0x0105 /*!< Branch future instruction speculatively executed and condition code check pass */
 #define ARM_PMU_LE_CANCEL 0x0108 /*!< Loop end instruction not taken */
 #define ARM_PMU_BF_CANCEL 0x0109 /*!< Branch future instruction not taken */
-#define ARM_PMU_SE_CALL_S 0x0114 /*!< Call to secure function, resulting in Security state change  \
-                                  */
+#define ARM_PMU_SE_CALL_S                                                                          \
+  0x0114 /*!< Call to secure function, resulting in Security state change                          \
+          */
 #define ARM_PMU_SE_CALL_NS                                                                         \
   0x0115 /*!< Call to non-secure function, resulting in Security state change */
 #define ARM_PMU_DWT_CMPMATCH0    0x0118 /*!< DWT comparator 0 match */

@@ -422,8 +422,9 @@ byte configuration */
 /** @defgroup FLASH_OB_USER_IO_VDD_HSLV FLASH Option Bytes VDD IO HSLV
  * @{
  */
-#define OB_IO_VDD_HSLV_DISABLE 0x00000000U /*!< High-speed IO at low VDD voltage feature disabled  \
-                                            */
+#define OB_IO_VDD_HSLV_DISABLE                                                                     \
+  0x00000000U /*!< High-speed IO at low VDD voltage feature disabled                               \
+               */
 #define OB_IO_VDD_HSLV_ENABLE                                                                      \
   FLASH_OPTSR_IO_VDD_HSLV /*!< High-speed IO at low VDD voltage feature enabled */
 /**
@@ -571,10 +572,11 @@ byte configuration */
  * @{
  */
 #if defined(FLASH_OPTSR2_TZEN)
-#define OB_TZEN_DISABLE (0xC3U << FLASH_OPTSR2_TZEN_Pos) /*!< Global TrustZone security disabled   \
-                                                          */
-#define OB_TZEN_ENABLE (0xB4U << FLASH_OPTSR2_TZEN_Pos)  /*!< Global TrustZone security enabled */
-#endif                                                   /* FLASH_OPTSR2_TZEN */
+#define OB_TZEN_DISABLE                                                                            \
+  (0xC3U << FLASH_OPTSR2_TZEN_Pos)                      /*!< Global TrustZone security disabled    \
+                                                         */
+#define OB_TZEN_ENABLE (0xB4U << FLASH_OPTSR2_TZEN_Pos) /*!< Global TrustZone security enabled */
+#endif                                                  /* FLASH_OPTSR2_TZEN */
 /**
  * @}
  */
@@ -829,10 +831,11 @@ byte configuration */
 #define FLASH_OPERATION_AREA_BANK_2 FLASH_OPSR_BK_OP /*!< Operation in Flash Bank 2 */
 #define FLASH_OPERATION_AREA_SYSF   FLASH_OPSR_SYSF_OP /*!< Operation in System Flash memory */
 #if defined(FLASH_EDATAR_EDATA_EN)
-#define FLASH_OPERATION_AREA_DATA FLASH_OPSR_DATA_OP /*!< Operation in Flash high-cycle data area  \
-                                                      */
-#endif                                               /* FLASH_EDATAR_EDATA_EN */
-#define FLASH_OPERATION_AREA_OTP FLASH_OPSR_OTP_OP   /*!< Operation in Flash OTP area             */
+#define FLASH_OPERATION_AREA_DATA                                                                  \
+  FLASH_OPSR_DATA_OP                               /*!< Operation in Flash high-cycle data area    \
+                                                    */
+#endif                                             /* FLASH_EDATAR_EDATA_EN */
+#define FLASH_OPERATION_AREA_OTP FLASH_OPSR_OTP_OP /*!< Operation in Flash OTP area             */
 /**
  * @}
  */

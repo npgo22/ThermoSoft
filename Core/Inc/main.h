@@ -70,8 +70,8 @@ void MX_ETH_Init(void);
 /* USER CODE BEGIN Private defines */
 
 // Packet batching configuration
-#define SENSOR_COUNT 4          // Number of thermocouple sensors
-#define BATCH_SIZE 10           // Number of reading sets per packet
+#define SENSOR_COUNT 4  // Number of thermocouple sensors
+#define BATCH_SIZE   10 // Number of reading sets per packet
 
 // Packed structure for individual thermocouple reading (legacy)
 typedef struct __attribute__((packed)) {
@@ -81,12 +81,12 @@ typedef struct __attribute__((packed)) {
 
 // Packed structure for batched sensor data packet
 typedef struct __attribute__((packed)) {
-  uint32_t packetTag;           // Packet identifier
-  float tc1_temps[BATCH_SIZE];  // Thermocouple 1 temperature batch
-  float tc2_temps[BATCH_SIZE];  // Thermocouple 2 temperature batch
-  float tc3_temps[BATCH_SIZE];  // Thermocouple 3 temperature batch
-  float tc4_temps[BATCH_SIZE];  // Thermocouple 4 temperature batch
-  uint32_t packetTime;          // Timestamp when packet was sent
+  uint32_t packetTag;          // Packet identifier
+  float tc1_temps[BATCH_SIZE]; // Thermocouple 1 temperature batch
+  float tc2_temps[BATCH_SIZE]; // Thermocouple 2 temperature batch
+  float tc3_temps[BATCH_SIZE]; // Thermocouple 3 temperature batch
+  float tc4_temps[BATCH_SIZE]; // Thermocouple 4 temperature batch
+  uint32_t packetTime;         // Timestamp when packet was sent
 } sensor_data_packet_t;
 
 // Packet identifier for COSMOS/receiver
@@ -134,16 +134,15 @@ typedef struct __attribute__((packed)) {
 
 // MAX31856 Common Configuration
 
-/* 
+/*
 Bit 0
 50Hz/60Hz Noise Rejection Filter Selection
 0= Selects rejection of 60Hz and its harmonics (default)
 1= Selects rejection of 50Hz and its harmonics
 Note: Change the notch frequency only while in the “Normally Off” mode – not in the Automatic
-Conversion mode. 
+Conversion mode.
 */
 #define MAX31856_NOISE_FILTER CR0_FILTER_OUT_60Hz
-
 
 // Bits 1 and 2 are for faults.
 
@@ -152,12 +151,12 @@ Bit 3
 Cold-Junction Sensor Disable
 0 = Cold-junction temperature sensor enabled (default)
 1 = Cold-junction temperature sensor disabled. Data from an external temperature sensor may be
-written to the cold-junction temperature register. When this bit changes from 0 to 1, the most recent
-cold-junction temperature value will remain in the cold-junction temperature register until the internal
-sensor is enabled or until a new value is written to the register. The overall temperature conversion
-time is reduced by 25ms (typ) when this bit is set to 1.
+written to the cold-junction temperature register. When this bit changes from 0 to 1, the most
+recent cold-junction temperature value will remain in the cold-junction temperature register until
+the internal sensor is enabled or until a new value is written to the register. The overall
+temperature conversion time is reduced by 25ms (typ) when this bit is set to 1.
 */
-#define MAX31856_CJ_ENABLE       CR0_CJ_ENABLED
+#define MAX31856_CJ_ENABLE CR0_CJ_ENABLED
 
 /*
 Bits 4 and 5 enable/disable open-circuit fault detection and select fault detection timing.
@@ -170,7 +169,6 @@ This is set by resistance of the leads and is as follows:
     11    | Enabled    | 40k > R_S > 5k, Time const > 2ms
 */
 #define MAX31856_OC_FAULT_DETECT CR0_OC_DETECT_ENABLED_TC_LESS_2ms
-
 
 // Bit 6 sets oneshot mode.
 
@@ -197,7 +195,7 @@ Thermocouple Type
 11xx = Voltage Mode, Gain = 32. Code = 32 x 1.6 x 217 x VIN
 Where Code is 19 bit signed number from TC registers and VIN is thermocouple input voltage
 */
-#define MAX31856_TC_TYPE         CR1_TC_TYPE_K
+#define MAX31856_TC_TYPE CR1_TC_TYPE_K
 
 /*
 Bits 6:4
@@ -218,8 +216,7 @@ Typical conversion times:
 The Thermocouple Voltage Conversion Averaging Mode settings should not be changed while
 conversions are taking place.
 */
-#define MAX31856_AVG_SAMPLES     CR1_AVG_TC_SAMPLES_4
-
+#define MAX31856_AVG_SAMPLES CR1_AVG_TC_SAMPLES_4
 
 // UDP Configuration
 #define UDP_DEST_IP_ADDR0    192

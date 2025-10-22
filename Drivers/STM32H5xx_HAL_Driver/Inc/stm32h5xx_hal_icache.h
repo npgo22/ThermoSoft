@@ -81,10 +81,11 @@ typedef struct {
 /** @defgroup ICACHE_Monitor_Type Monitor type
  * @{
  */
-#define ICACHE_MONITOR_HIT_MISS (ICACHE_CR_HITMEN | ICACHE_CR_MISSMEN) /*!< Hit & Miss monitoring  \
-                                                                        */
-#define ICACHE_MONITOR_HIT  ICACHE_CR_HITMEN                           /*!< Hit monitoring */
-#define ICACHE_MONITOR_MISS ICACHE_CR_MISSMEN                          /*!< Miss monitoring */
+#define ICACHE_MONITOR_HIT_MISS                                                                    \
+  (ICACHE_CR_HITMEN | ICACHE_CR_MISSMEN)      /*!< Hit & Miss monitoring                           \
+                                               */
+#define ICACHE_MONITOR_HIT  ICACHE_CR_HITMEN  /*!< Hit monitoring */
+#define ICACHE_MONITOR_MISS ICACHE_CR_MISSMEN /*!< Miss monitoring */
 /**
  * @}
  */

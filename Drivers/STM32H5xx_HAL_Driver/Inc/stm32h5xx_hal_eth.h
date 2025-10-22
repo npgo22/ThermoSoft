@@ -795,17 +795,20 @@ typedef struct {
 #define ETH_DMATXNDESCWBF_FF                                                                       \
   0x00002000U /*!< Packet Flushed: DMA/MTL flushed the packet due to SW flush */
 #define ETH_DMATXNDESCWBF_PCE 0x00001000U /*!< Payload Checksum Error */
-#define ETH_DMATXNDESCWBF_LCA 0x00000800U /*!< Loss of Carrier: carrier lost during transmission   \
-                                           */
-#define ETH_DMATXNDESCWBF_NC 0x00000400U  /*!< No Carrier: no carrier signal from the transceiver  \
-                                           */
+#define ETH_DMATXNDESCWBF_LCA                                                                      \
+  0x00000800U /*!< Loss of Carrier: carrier lost during transmission                               \
+               */
+#define ETH_DMATXNDESCWBF_NC                                                                       \
+  0x00000400U /*!< No Carrier: no carrier signal from the transceiver                              \
+               */
 #define ETH_DMATXNDESCWBF_LCO                                                                      \
   0x00000200U /*!< Late Collision: transmission aborted due to collision */
 #define ETH_DMATXNDESCWBF_EC                                                                       \
   0x00000100U /*!< Excessive Collision: transmission aborted after 16 collisions */
-#define ETH_DMATXNDESCWBF_CC 0x000000F0U  /*!< Collision Count */
-#define ETH_DMATXNDESCWBF_ED 0x00000008U  /*!< Excessive Deferral */
-#define ETH_DMATXNDESCWBF_UF 0x00000004U  /*!< Underflow Error: late data arrival from the memory  \
+#define ETH_DMATXNDESCWBF_CC 0x000000F0U /*!< Collision Count */
+#define ETH_DMATXNDESCWBF_ED 0x00000008U /*!< Excessive Deferral */
+#define ETH_DMATXNDESCWBF_UF                                                                       \
+  0x00000004U                             /*!< Underflow Error: late data arrival from the memory  \
                                            */
 #define ETH_DMATXNDESCWBF_DB  0x00000002U /*!< Deferred Bit */
 #define ETH_DMATXNDESCWBF_IHE 0x00000004U /*!< IP Header Error */
@@ -928,8 +931,9 @@ typedef struct {
 #define ETH_DMARXNDESCWBF_PFT      0x00001000U /*!< PTP Packet Type  */
 #define ETH_DMARXNDESCWBF_PMT_NO   0x00000000U /*!< PTP Message Type: No PTP message received  */
 #define ETH_DMARXNDESCWBF_PMT_SYNC 0x00000100U /*!< PTP Message Type: SYNC (all clock types)  */
-#define ETH_DMARXNDESCWBF_PMT_FUP  0x00000200U /*!< PTP Message Type: Follow_Up (all clock types)  \
-                                                */
+#define ETH_DMARXNDESCWBF_PMT_FUP                                                                  \
+  0x00000200U /*!< PTP Message Type: Follow_Up (all clock types)                                   \
+               */
 #define ETH_DMARXNDESCWBF_PMT_DREQ                                                                 \
   0x00000300U /*!< PTP Message Type: Delay_Req (all clock types)  */
 #define ETH_DMARXNDESCWBF_PMT_DRESP                                                                \

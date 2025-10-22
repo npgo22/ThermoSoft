@@ -526,28 +526,18 @@ typedef void (*pFDCAN_ErrorStatusCallbackTypeDef)(
 /** @defgroup HAL_FDCAN_Error_Code HAL FDCAN Error Code
  * @{
  */
-#define HAL_FDCAN_ERROR_NONE                                                                       \
-  ((uint32_t) 0x00000000U) /*!< No error */
-#define HAL_FDCAN_ERROR_TIMEOUT                                                                    \
-  ((uint32_t) 0x00000001U) /*!< Timeout error */
-#define HAL_FDCAN_ERROR_NOT_INITIALIZED                                                            \
-  ((uint32_t) 0x00000002U) /*!< Peripheral not initialized */
-#define HAL_FDCAN_ERROR_NOT_READY                                                                  \
-  ((uint32_t) 0x00000004U) /*!< Peripheral not ready */
-#define HAL_FDCAN_ERROR_NOT_STARTED                                                                \
-  ((uint32_t) 0x00000008U) /*!< Peripheral not started */
-#define HAL_FDCAN_ERROR_NOT_SUPPORTED                                                              \
-  ((uint32_t) 0x00000010U) /*!< Mode not supported */
-#define HAL_FDCAN_ERROR_PARAM                                                                      \
-  ((uint32_t) 0x00000020U) /*!< Parameter error */
-#define HAL_FDCAN_ERROR_PENDING                                                                    \
-  ((uint32_t) 0x00000040U) /*!< Pending operation */
-#define HAL_FDCAN_ERROR_RAM_ACCESS                                                                 \
-  ((uint32_t) 0x00000080U) /*!< Message RAM Access Failure */
-#define HAL_FDCAN_ERROR_FIFO_EMPTY                                                                 \
-  ((uint32_t) 0x00000100U) /*!< Get element from empty FIFO */
-#define HAL_FDCAN_ERROR_FIFO_FULL                                                                  \
-  ((uint32_t) 0x00000200U) /*!< Put element in full FIFO */
+#define HAL_FDCAN_ERROR_NONE            ((uint32_t) 0x00000000U) /*!< No error */
+#define HAL_FDCAN_ERROR_TIMEOUT         ((uint32_t) 0x00000001U) /*!< Timeout error */
+#define HAL_FDCAN_ERROR_NOT_INITIALIZED ((uint32_t) 0x00000002U) /*!< Peripheral not initialized   \
+                                                                  */
+#define HAL_FDCAN_ERROR_NOT_READY     ((uint32_t) 0x00000004U)   /*!< Peripheral not ready */
+#define HAL_FDCAN_ERROR_NOT_STARTED   ((uint32_t) 0x00000008U)   /*!< Peripheral not started */
+#define HAL_FDCAN_ERROR_NOT_SUPPORTED ((uint32_t) 0x00000010U)   /*!< Mode not supported */
+#define HAL_FDCAN_ERROR_PARAM         ((uint32_t) 0x00000020U)   /*!< Parameter error */
+#define HAL_FDCAN_ERROR_PENDING       ((uint32_t) 0x00000040U)   /*!< Pending operation */
+#define HAL_FDCAN_ERROR_RAM_ACCESS    ((uint32_t) 0x00000080U)   /*!< Message RAM Access Failure */
+#define HAL_FDCAN_ERROR_FIFO_EMPTY    ((uint32_t) 0x00000100U)   /*!< Get element from empty FIFO */
+#define HAL_FDCAN_ERROR_FIFO_FULL     ((uint32_t) 0x00000200U)   /*!< Put element in full FIFO */
 #define HAL_FDCAN_ERROR_LOG_OVERFLOW                                                               \
   FDCAN_IR_ELO /*!< Overflow of CAN Error Logging Counter                                  */
 #define HAL_FDCAN_ERROR_RAM_WDG                                                                    \
@@ -560,9 +550,8 @@ typedef void (*pFDCAN_ErrorStatusCallbackTypeDef)(
   FDCAN_IR_ARA /*!< Access to Reserved Address                                             */
 
 #if USE_HAL_FDCAN_REGISTER_CALLBACKS == 1
-#define HAL_FDCAN_ERROR_INVALID_CALLBACK                                                           \
-  ((uint32_t) 0x00000100U) /*!< Invalid Callback error */
-#endif                     /* USE_HAL_FDCAN_REGISTER_CALLBACKS */
+#define HAL_FDCAN_ERROR_INVALID_CALLBACK ((uint32_t) 0x00000100U) /*!< Invalid Callback error */
+#endif /* USE_HAL_FDCAN_REGISTER_CALLBACKS */
 /**
  * @}
  */
@@ -570,9 +559,10 @@ typedef void (*pFDCAN_ErrorStatusCallbackTypeDef)(
 /** @defgroup FDCAN_frame_format FDCAN Frame Format
  * @{
  */
-#define FDCAN_FRAME_CLASSIC   ((uint32_t) 0x00000000U)     /*!< Classic mode                      */
-#define FDCAN_FRAME_FD_NO_BRS ((uint32_t) FDCAN_CCCR_FDOE) /*!< FD mode without BitRate Switching  \
-                                                            */
+#define FDCAN_FRAME_CLASSIC ((uint32_t) 0x00000000U) /*!< Classic mode                      */
+#define FDCAN_FRAME_FD_NO_BRS                                                                      \
+  ((uint32_t) FDCAN_CCCR_FDOE) /*!< FD mode without BitRate Switching                              \
+                                */
 #define FDCAN_FRAME_FD_BRS                                                                         \
   ((uint32_t) (FDCAN_CCCR_FDOE | FDCAN_CCCR_BRSE)) /*!< FD mode with BitRate Switching    */
 /**
@@ -1063,9 +1053,10 @@ typedef void (*pFDCAN_ErrorStatusCallbackTypeDef)(
 #define FDCAN_IT_RAM_ACCESS_FAILURE                                                                \
   FDCAN_IE_MRAFE /*!< Message RAM access failure occurred              */
 #define FDCAN_IT_ERROR_LOGGING_OVERFLOW                                                            \
-  FDCAN_IE_ELOE                             /*!< Overflow of FDCAN Error Logging Counter occurred */
-#define FDCAN_IT_RAM_WATCHDOG FDCAN_IE_WDIE /*!< Message RAM Watchdog event due to missing READY   \
-                                             */
+  FDCAN_IE_ELOE /*!< Overflow of FDCAN Error Logging Counter occurred */
+#define FDCAN_IT_RAM_WATCHDOG                                                                      \
+  FDCAN_IE_WDIE /*!< Message RAM Watchdog event due to missing READY                               \
+                 */
 #define FDCAN_IT_ARB_PROTOCOL_ERROR                                                                \
   FDCAN_IE_PEAE /*!< Protocol error in arbitration phase detected     */
 #define FDCAN_IT_DATA_PROTOCOL_ERROR                                                               \

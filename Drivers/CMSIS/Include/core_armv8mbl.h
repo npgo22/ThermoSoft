@@ -721,8 +721,9 @@ typedef struct {
   (0x3UL << DWT_FUNCTION_DATAVSIZE_Pos) /*!< DWT FUNCTION: DATAVSIZE Mask */
 
 #define DWT_FUNCTION_ACTION_Pos 4U /*!< DWT FUNCTION: ACTION Position */
-#define DWT_FUNCTION_ACTION_Msk (0x3UL << DWT_FUNCTION_ACTION_Pos) /*!< DWT FUNCTION: ACTION Mask  \
-                                                                    */
+#define DWT_FUNCTION_ACTION_Msk                                                                    \
+  (0x3UL << DWT_FUNCTION_ACTION_Pos) /*!< DWT FUNCTION: ACTION Mask                                \
+                                      */
 
 #define DWT_FUNCTION_MATCH_Pos 0U /*!< DWT FUNCTION: MATCH Position */
 #define DWT_FUNCTION_MATCH_Msk                                                                     \
@@ -811,12 +812,14 @@ typedef struct {
 #define TPI_DEVID_NRZVALID_Msk (0x1UL << TPI_DEVID_NRZVALID_Pos) /*!< TPI DEVID: NRZVALID Mask */
 
 #define TPI_DEVID_MANCVALID_Pos 10U /*!< TPI DEVID: MANCVALID Position */
-#define TPI_DEVID_MANCVALID_Msk (0x1UL << TPI_DEVID_MANCVALID_Pos) /*!< TPI DEVID: MANCVALID Mask  \
-                                                                    */
+#define TPI_DEVID_MANCVALID_Msk                                                                    \
+  (0x1UL << TPI_DEVID_MANCVALID_Pos) /*!< TPI DEVID: MANCVALID Mask                                \
+                                      */
 
 #define TPI_DEVID_PTINVALID_Pos 9U /*!< TPI DEVID: PTINVALID Position */
-#define TPI_DEVID_PTINVALID_Msk (0x1UL << TPI_DEVID_PTINVALID_Pos) /*!< TPI DEVID: PTINVALID Mask  \
-                                                                    */
+#define TPI_DEVID_PTINVALID_Msk                                                                    \
+  (0x1UL << TPI_DEVID_PTINVALID_Pos) /*!< TPI DEVID: PTINVALID Mask                                \
+                                      */
 
 #define TPI_DEVID_FIFOSZ_Pos 6U                              /*!< TPI DEVID: FIFO depth Position */
 #define TPI_DEVID_FIFOSZ_Msk (0x7UL << TPI_DEVID_FIFOSZ_Pos) /*!< TPI DEVID: FIFO depth Mask */
@@ -1024,8 +1027,9 @@ typedef struct {
 #define CoreDebug_DHCSR_S_RESTART_ST_Msk                                                           \
   (1UL << CoreDebug_DHCSR_S_RESTART_ST_Pos) /*!< \deprecated CoreDebug DHCSR: S_RESTART_ST Mask */
 
-#define CoreDebug_DHCSR_S_RESET_ST_Pos 25U /*!< \deprecated CoreDebug DHCSR: S_RESET_ST Position   \
-                                            */
+#define CoreDebug_DHCSR_S_RESET_ST_Pos                                                             \
+  25U /*!< \deprecated CoreDebug DHCSR: S_RESET_ST Position                                        \
+       */
 #define CoreDebug_DHCSR_S_RESET_ST_Msk                                                             \
   (1UL << CoreDebug_DHCSR_S_RESET_ST_Pos) /*!< \deprecated CoreDebug DHCSR: S_RESET_ST Mask */
 
@@ -1080,8 +1084,9 @@ typedef struct {
 #define CoreDebug_DEMCR_DWTENA_Msk                                                                 \
   (1UL << CoreDebug_DEMCR_DWTENA_Pos) /*!< \deprecated CoreDebug DEMCR: DWTENA Mask */
 
-#define CoreDebug_DEMCR_VC_HARDERR_Pos 10U /*!< \deprecated CoreDebug DEMCR: VC_HARDERR Position   \
-                                            */
+#define CoreDebug_DEMCR_VC_HARDERR_Pos                                                             \
+  10U /*!< \deprecated CoreDebug DEMCR: VC_HARDERR Position                                        \
+       */
 #define CoreDebug_DEMCR_VC_HARDERR_Msk                                                             \
   (1UL << CoreDebug_DEMCR_VC_HARDERR_Pos) /*!< \deprecated CoreDebug DEMCR: VC_HARDERR Mask */
 
@@ -1257,8 +1262,9 @@ typedef struct {
   (0x1UL << DCB_DSCSR_CDSKEY_Pos) /*!< DCB DSCSR: CDS write-enable key Mask */
 
 #define DCB_DSCSR_CDS_Pos 16U /*!< DCB DSCSR: Current domain Secure Position */
-#define DCB_DSCSR_CDS_Msk (0x1UL << DCB_DSCSR_CDS_Pos) /*!< DCB DSCSR: Current domain Secure Mask  \
-                                                        */
+#define DCB_DSCSR_CDS_Msk                                                                          \
+  (0x1UL << DCB_DSCSR_CDS_Pos) /*!< DCB DSCSR: Current domain Secure Mask                          \
+                                */
 
 #define DCB_DSCSR_SBRSEL_Pos 1U /*!< DCB DSCSR: Secure banked register select Position */
 #define DCB_DSCSR_SBRSEL_Msk                                                                       \
@@ -1313,8 +1319,9 @@ typedef struct {
 #define DIB_DAUTHSTATUS_SID_Msk                                                                    \
   (0x3UL << DIB_DAUTHSTATUS_SID_Pos) /*!< DIB DAUTHSTATUS: Secure Invasive Debug Mask */
 
-#define DIB_DAUTHSTATUS_NSNID_Pos 2U /*!< DIB DAUTHSTATUS: Non-secure Non-invasive Debug Position  \
-                                      */
+#define DIB_DAUTHSTATUS_NSNID_Pos                                                                  \
+  2U /*!< DIB DAUTHSTATUS: Non-secure Non-invasive Debug Position                                  \
+      */
 #define DIB_DAUTHSTATUS_NSNID_Msk                                                                  \
   (0x3UL << DIB_DAUTHSTATUS_NSNID_Pos) /*!< DIB DAUTHSTATUS: Non-secure Non-invasive Debug Mask */
 

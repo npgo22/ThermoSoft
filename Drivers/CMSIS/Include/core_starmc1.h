@@ -811,8 +811,9 @@ typedef struct {
 
 #define SCB_CFSR_DACCVIOL_Pos                                                                      \
   (SCB_CFSR_MEMFAULTSR_Pos + 1U) /*!< SCB CFSR (MMFSR): DACCVIOL Position */
-#define SCB_CFSR_DACCVIOL_Msk (1UL << SCB_CFSR_DACCVIOL_Pos) /*!< SCB CFSR (MMFSR): DACCVIOL Mask  \
-                                                              */
+#define SCB_CFSR_DACCVIOL_Msk                                                                      \
+  (1UL << SCB_CFSR_DACCVIOL_Pos) /*!< SCB CFSR (MMFSR): DACCVIOL Mask                              \
+                                  */
 
 #define SCB_CFSR_IACCVIOL_Pos                                                                      \
   (SCB_CFSR_MEMFAULTSR_Pos + 0U) /*!< SCB CFSR (MMFSR): IACCVIOL Position */
@@ -825,18 +826,21 @@ typedef struct {
 #define SCB_CFSR_BFARVALID_Msk                                                                     \
   (1UL << SCB_CFSR_BFARVALID_Pos) /*!< SCB CFSR (BFSR): BFARVALID Mask */
 
-#define SCB_CFSR_LSPERR_Pos (SCB_CFSR_BUSFAULTSR_Pos + 5U) /*!< SCB CFSR (BFSR): LSPERR Position   \
-                                                            */
-#define SCB_CFSR_LSPERR_Msk (1UL << SCB_CFSR_LSPERR_Pos)   /*!< SCB CFSR (BFSR): LSPERR Mask */
+#define SCB_CFSR_LSPERR_Pos                                                                        \
+  (SCB_CFSR_BUSFAULTSR_Pos + 5U)                         /*!< SCB CFSR (BFSR): LSPERR Position     \
+                                                          */
+#define SCB_CFSR_LSPERR_Msk (1UL << SCB_CFSR_LSPERR_Pos) /*!< SCB CFSR (BFSR): LSPERR Mask */
 
-#define SCB_CFSR_STKERR_Pos (SCB_CFSR_BUSFAULTSR_Pos + 4U) /*!< SCB CFSR (BFSR): STKERR Position   \
-                                                            */
-#define SCB_CFSR_STKERR_Msk (1UL << SCB_CFSR_STKERR_Pos)   /*!< SCB CFSR (BFSR): STKERR Mask */
+#define SCB_CFSR_STKERR_Pos                                                                        \
+  (SCB_CFSR_BUSFAULTSR_Pos + 4U)                         /*!< SCB CFSR (BFSR): STKERR Position     \
+                                                          */
+#define SCB_CFSR_STKERR_Msk (1UL << SCB_CFSR_STKERR_Pos) /*!< SCB CFSR (BFSR): STKERR Mask */
 
 #define SCB_CFSR_UNSTKERR_Pos                                                                      \
   (SCB_CFSR_BUSFAULTSR_Pos + 3U) /*!< SCB CFSR (BFSR): UNSTKERR Position */
-#define SCB_CFSR_UNSTKERR_Msk (1UL << SCB_CFSR_UNSTKERR_Pos) /*!< SCB CFSR (BFSR): UNSTKERR Mask   \
-                                                              */
+#define SCB_CFSR_UNSTKERR_Msk                                                                      \
+  (1UL << SCB_CFSR_UNSTKERR_Pos) /*!< SCB CFSR (BFSR): UNSTKERR Mask                               \
+                                  */
 
 #define SCB_CFSR_IMPRECISERR_Pos                                                                   \
   (SCB_CFSR_BUSFAULTSR_Pos + 2U) /*!< SCB CFSR (BFSR): IMPRECISERR Position */
@@ -874,8 +878,9 @@ typedef struct {
 
 #define SCB_CFSR_INVSTATE_Pos                                                                      \
   (SCB_CFSR_USGFAULTSR_Pos + 1U) /*!< SCB CFSR (UFSR): INVSTATE Position */
-#define SCB_CFSR_INVSTATE_Msk (1UL << SCB_CFSR_INVSTATE_Pos) /*!< SCB CFSR (UFSR): INVSTATE Mask   \
-                                                              */
+#define SCB_CFSR_INVSTATE_Msk                                                                      \
+  (1UL << SCB_CFSR_INVSTATE_Pos) /*!< SCB CFSR (UFSR): INVSTATE Mask                               \
+                                  */
 
 #define SCB_CFSR_UNDEFINSTR_Pos                                                                    \
   (SCB_CFSR_USGFAULTSR_Pos + 0U) /*!< SCB CFSR (UFSR): UNDEFINSTR Position */
@@ -961,8 +966,9 @@ typedef struct {
 #define SCB_CCSIDR_WA_Msk (1UL << SCB_CCSIDR_WA_Pos) /*!< SCB CCSIDR: WA Mask */
 
 #define SCB_CCSIDR_NUMSETS_Pos 13U /*!< SCB CCSIDR: NumSets Position */
-#define SCB_CCSIDR_NUMSETS_Msk (0x7FFFUL << SCB_CCSIDR_NUMSETS_Pos) /*!< SCB CCSIDR: NumSets Mask  \
-                                                                     */
+#define SCB_CCSIDR_NUMSETS_Msk                                                                     \
+  (0x7FFFUL << SCB_CCSIDR_NUMSETS_Pos) /*!< SCB CCSIDR: NumSets Mask                               \
+                                        */
 
 #define SCB_CCSIDR_ASSOCIATIVITY_Pos 3U /*!< SCB CCSIDR: Associativity Position */
 #define SCB_CCSIDR_ASSOCIATIVITY_Msk                                                               \
@@ -1335,8 +1341,9 @@ typedef struct {
 #define DWT_CTRL_CYCEVTENA_Msk (0x1UL << DWT_CTRL_CYCEVTENA_Pos) /*!< DWT CTRL: CYCEVTENA Mask */
 
 #define DWT_CTRL_FOLDEVTENA_Pos 21U /*!< DWT CTRL: FOLDEVTENA Position */
-#define DWT_CTRL_FOLDEVTENA_Msk (0x1UL << DWT_CTRL_FOLDEVTENA_Pos) /*!< DWT CTRL: FOLDEVTENA Mask  \
-                                                                    */
+#define DWT_CTRL_FOLDEVTENA_Msk                                                                    \
+  (0x1UL << DWT_CTRL_FOLDEVTENA_Pos) /*!< DWT CTRL: FOLDEVTENA Mask                                \
+                                      */
 
 #define DWT_CTRL_LSUEVTENA_Pos 20U /*!< DWT CTRL: LSUEVTENA Position */
 #define DWT_CTRL_LSUEVTENA_Msk (0x1UL << DWT_CTRL_LSUEVTENA_Pos) /*!< DWT CTRL: LSUEVTENA Mask */
@@ -1355,8 +1362,9 @@ typedef struct {
 #define DWT_CTRL_EXCTRCENA_Msk (0x1UL << DWT_CTRL_EXCTRCENA_Pos) /*!< DWT CTRL: EXCTRCENA Mask */
 
 #define DWT_CTRL_PCSAMPLENA_Pos 12U /*!< DWT CTRL: PCSAMPLENA Position */
-#define DWT_CTRL_PCSAMPLENA_Msk (0x1UL << DWT_CTRL_PCSAMPLENA_Pos) /*!< DWT CTRL: PCSAMPLENA Mask  \
-                                                                    */
+#define DWT_CTRL_PCSAMPLENA_Msk                                                                    \
+  (0x1UL << DWT_CTRL_PCSAMPLENA_Pos) /*!< DWT CTRL: PCSAMPLENA Mask                                \
+                                      */
 
 #define DWT_CTRL_SYNCTAP_Pos 10U                             /*!< DWT CTRL: SYNCTAP Position */
 #define DWT_CTRL_SYNCTAP_Msk (0x3UL << DWT_CTRL_SYNCTAP_Pos) /*!< DWT CTRL: SYNCTAP Mask */
@@ -1368,8 +1376,9 @@ typedef struct {
 #define DWT_CTRL_POSTINIT_Msk (0xFUL << DWT_CTRL_POSTINIT_Pos) /*!< DWT CTRL: POSTINIT Mask */
 
 #define DWT_CTRL_POSTPRESET_Pos 1U /*!< DWT CTRL: POSTPRESET Position */
-#define DWT_CTRL_POSTPRESET_Msk (0xFUL << DWT_CTRL_POSTPRESET_Pos) /*!< DWT CTRL: POSTPRESET Mask  \
-                                                                    */
+#define DWT_CTRL_POSTPRESET_Msk                                                                    \
+  (0xFUL << DWT_CTRL_POSTPRESET_Pos) /*!< DWT CTRL: POSTPRESET Mask                                \
+                                      */
 
 #define DWT_CTRL_CYCCNTENA_Pos 0U /*!< DWT CTRL: CYCCNTENA Position */
 #define DWT_CTRL_CYCCNTENA_Msk                                                                     \
@@ -1377,13 +1386,15 @@ typedef struct {
 
 /* DWT CPI Count Register Definitions */
 #define DWT_CPICNT_CPICNT_Pos 0U /*!< DWT CPICNT: CPICNT Position */
-#define DWT_CPICNT_CPICNT_Msk (0xFFUL /*<< DWT_CPICNT_CPICNT_Pos*/) /*!< DWT CPICNT: CPICNT Mask   \
-                                                                     */
+#define DWT_CPICNT_CPICNT_Msk                                                                      \
+  (0xFFUL /*<< DWT_CPICNT_CPICNT_Pos*/) /*!< DWT CPICNT: CPICNT Mask                               \
+                                         */
 
 /* DWT Exception Overhead Count Register Definitions */
 #define DWT_EXCCNT_EXCCNT_Pos 0U /*!< DWT EXCCNT: EXCCNT Position */
-#define DWT_EXCCNT_EXCCNT_Msk (0xFFUL /*<< DWT_EXCCNT_EXCCNT_Pos*/) /*!< DWT EXCCNT: EXCCNT Mask   \
-                                                                     */
+#define DWT_EXCCNT_EXCCNT_Msk                                                                      \
+  (0xFFUL /*<< DWT_EXCCNT_EXCCNT_Pos*/) /*!< DWT EXCCNT: EXCCNT Mask                               \
+                                         */
 
 /* DWT Sleep Count Register Definitions */
 #define DWT_SLEEPCNT_SLEEPCNT_Pos 0U /*!< DWT SLEEPCNT: SLEEPCNT Position */
@@ -1392,8 +1403,9 @@ typedef struct {
 
 /* DWT LSU Count Register Definitions */
 #define DWT_LSUCNT_LSUCNT_Pos 0U /*!< DWT LSUCNT: LSUCNT Position */
-#define DWT_LSUCNT_LSUCNT_Msk (0xFFUL /*<< DWT_LSUCNT_LSUCNT_Pos*/) /*!< DWT LSUCNT: LSUCNT Mask   \
-                                                                     */
+#define DWT_LSUCNT_LSUCNT_Msk                                                                      \
+  (0xFFUL /*<< DWT_LSUCNT_LSUCNT_Pos*/) /*!< DWT LSUCNT: LSUCNT Mask                               \
+                                         */
 
 /* DWT Folded-instruction Count Register Definitions */
 #define DWT_FOLDCNT_FOLDCNT_Pos 0U /*!< DWT FOLDCNT: FOLDCNT Position */
@@ -1413,8 +1425,9 @@ typedef struct {
   (0x3UL << DWT_FUNCTION_DATAVSIZE_Pos) /*!< DWT FUNCTION: DATAVSIZE Mask */
 
 #define DWT_FUNCTION_ACTION_Pos 4U /*!< DWT FUNCTION: ACTION Position */
-#define DWT_FUNCTION_ACTION_Msk (0x1UL << DWT_FUNCTION_ACTION_Pos) /*!< DWT FUNCTION: ACTION Mask  \
-                                                                    */
+#define DWT_FUNCTION_ACTION_Msk                                                                    \
+  (0x1UL << DWT_FUNCTION_ACTION_Pos) /*!< DWT FUNCTION: ACTION Mask                                \
+                                      */
 
 #define DWT_FUNCTION_MATCH_Pos 0U /*!< DWT FUNCTION: MATCH Position */
 #define DWT_FUNCTION_MATCH_Msk                                                                     \
@@ -1605,12 +1618,14 @@ typedef struct {
 #define TPI_DEVID_NRZVALID_Msk (0x1UL << TPI_DEVID_NRZVALID_Pos) /*!< TPI DEVID: NRZVALID Mask */
 
 #define TPI_DEVID_MANCVALID_Pos 10U /*!< TPI DEVID: MANCVALID Position */
-#define TPI_DEVID_MANCVALID_Msk (0x1UL << TPI_DEVID_MANCVALID_Pos) /*!< TPI DEVID: MANCVALID Mask  \
-                                                                    */
+#define TPI_DEVID_MANCVALID_Msk                                                                    \
+  (0x1UL << TPI_DEVID_MANCVALID_Pos) /*!< TPI DEVID: MANCVALID Mask                                \
+                                      */
 
 #define TPI_DEVID_PTINVALID_Pos 9U /*!< TPI DEVID: PTINVALID Position */
-#define TPI_DEVID_PTINVALID_Msk (0x1UL << TPI_DEVID_PTINVALID_Pos) /*!< TPI DEVID: PTINVALID Mask  \
-                                                                    */
+#define TPI_DEVID_PTINVALID_Msk                                                                    \
+  (0x1UL << TPI_DEVID_PTINVALID_Pos) /*!< TPI DEVID: PTINVALID Mask                                \
+                                      */
 
 #define TPI_DEVID_FIFOSZ_Pos 6U                              /*!< TPI DEVID: FIFOSZ Position */
 #define TPI_DEVID_FIFOSZ_Msk (0x7UL << TPI_DEVID_FIFOSZ_Pos) /*!< TPI DEVID: FIFOSZ Mask */
@@ -2090,8 +2105,9 @@ typedef struct {
   (0x1UL << DCB_DEMCR_MON_PEND_Pos) /*!< DCB DEMCR: Monitor pend Mask */
 
 #define DCB_DEMCR_MON_EN_Pos 16U /*!< DCB DEMCR: Monitor enable Position */
-#define DCB_DEMCR_MON_EN_Msk (0x1UL << DCB_DEMCR_MON_EN_Pos) /*!< DCB DEMCR: Monitor enable Mask   \
-                                                              */
+#define DCB_DEMCR_MON_EN_Msk                                                                       \
+  (0x1UL << DCB_DEMCR_MON_EN_Pos) /*!< DCB DEMCR: Monitor enable Mask                              \
+                                   */
 
 #define DCB_DEMCR_VC_SFERR_Pos 11U /*!< DCB DEMCR: Vector Catch SecureFault Position */
 #define DCB_DEMCR_VC_SFERR_Msk                                                                     \
@@ -2160,8 +2176,9 @@ typedef struct {
   (0x1UL << DCB_DSCSR_CDSKEY_Pos) /*!< DCB DSCSR: CDS write-enable key Mask */
 
 #define DCB_DSCSR_CDS_Pos 16U /*!< DCB DSCSR: Current domain Secure Position */
-#define DCB_DSCSR_CDS_Msk (0x1UL << DCB_DSCSR_CDS_Pos) /*!< DCB DSCSR: Current domain Secure Mask  \
-                                                        */
+#define DCB_DSCSR_CDS_Msk                                                                          \
+  (0x1UL << DCB_DSCSR_CDS_Pos) /*!< DCB DSCSR: Current domain Secure Mask                          \
+                                */
 
 #define DCB_DSCSR_SBRSEL_Pos 1U /*!< DCB DSCSR: Secure banked register select Position */
 #define DCB_DSCSR_SBRSEL_Msk                                                                       \
@@ -2216,8 +2233,9 @@ typedef struct {
 #define DIB_DAUTHSTATUS_SID_Msk                                                                    \
   (0x3UL << DIB_DAUTHSTATUS_SID_Pos) /*!< DIB DAUTHSTATUS: Secure Invasive Debug Mask */
 
-#define DIB_DAUTHSTATUS_NSNID_Pos 2U /*!< DIB DAUTHSTATUS: Non-secure Non-invasive Debug Position  \
-                                      */
+#define DIB_DAUTHSTATUS_NSNID_Pos                                                                  \
+  2U /*!< DIB DAUTHSTATUS: Non-secure Non-invasive Debug Position                                  \
+      */
 #define DIB_DAUTHSTATUS_NSNID_Msk                                                                  \
   (0x3UL << DIB_DAUTHSTATUS_NSNID_Pos) /*!< DIB DAUTHSTATUS: Non-secure Non-invasive Debug Mask */
 

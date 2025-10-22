@@ -221,9 +221,9 @@ typedef struct {
                                                                (HCD_DEVICE_SPEED_xxx)             */
 
 #if defined(USB_OTG_FS) || defined(USB_OTG_HS)
-  uint8_t do_ping;           /*!< Enable or disable the use of the PING protocol for HS mode.           */
-  uint8_t do_ssplit;         /*!< Enable start split transaction in HS mode.         */
-  uint8_t do_csplit;         /*!< Enable complete split transaction in HS mode.         */
+  uint8_t do_ping;   /*!< Enable or disable the use of the PING protocol for HS mode.           */
+  uint8_t do_ssplit; /*!< Enable start split transaction in HS mode.         */
+  uint8_t do_csplit; /*!< Enable complete split transaction in HS mode.         */
   uint8_t ep_ss_schedule;    /*!< Enable periodic endpoint start split schedule .    */
   uint32_t iso_splt_xactPos; /*!< iso split transfer transaction position. */
 #endif                       /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */

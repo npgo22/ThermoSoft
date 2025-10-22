@@ -1,0 +1,60 @@
+name: CMake Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (${{ matrix.build_type }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Debug, Release]
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v5
+      with:
+        submodules: recursive
+
+    - name: Install ARM GCC toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi
+
+    - name: Install Ninja
+      run: |
+        sudo apt-get install -y ninja-build
+
+    - name: Install CMake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '3.22.x'
+
+    - name: Verify toolchain
+      run: |
+        arm-none-eabi-gcc --version
+        cmake --version
+        ninja --version
+
+    - name: Configure CMake
+      run: |
+        cmake --preset ${{ matrix.build_type }}
+
+    - name: Build
+      run: |
+        cmake --build --preset ${{ matrix.build_type }} --verbose
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ThermoSoft-${{ matrix.build_type }}
+        path: |
+          build/${{ matrix.build_type }}/ThermoSoft.elf
+          build/${{ matrix.build_type }}/ThermoSoft.bin
+        retention-days: 30

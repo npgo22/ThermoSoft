@@ -15,9 +15,9 @@ Currently, CMake is used.
 | Feature | Implemented? | Needed for hotfire? | Notes |
 |---------|--------------|---------------------|-------|
 | CLK | Yes | Yes | 25 MHz HSE w/RCC. See ThermoSoft.ioc for frequencies set. |
-| ETH | Partial | Yes | Still needs to be piped in. |
-| MAX31856 | No | Yes | Library imported, needs to be packed into a struct and sent over ETH. |
+| ETH | Yes | Yes | Still needs to be piped in. |
+| MAX31856 | Yes | Yes | Library imported, needs to be packed into a struct and sent over ETH. |
 | CAN-FD | No | No | May not be implemented at this time. |
 | FMAC | No | No | Enabled but may not be needed. Useful for hardware-accelered FIR filters. |
-| CI | No | No | Just a simple CMake build, shouldn't be too hard. |
-| Formatting | No | No | clang-format with GCC style would likely fit pretty well. |
+| CI | Yes | No | Just a simple CMake build, shouldn't be too hard. |
+| Formatting | Yes | No | clang-format with GCC style would likely fit pretty well. |

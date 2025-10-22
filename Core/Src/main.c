@@ -28,9 +28,9 @@
 #include "lwip/netif.h"
 #include "lwip/opt.h"
 #include "lwip/timeouts.h"
+#include "lwip/udp.h"
 #include "max31856.h"
 #include "netif/etharp.h"
-#include "lwip/udp.h"
 
 #if LWIP_DHCP
 #include "lwip/dhcp.h"
@@ -77,7 +77,7 @@ extern struct netif gnetif;
 max31856_t therm1, therm2, therm3, therm4;
 struct udp_pcb *udp_tx_pcb;
 sensor_data_packet_t sensor_packet;
-uint8_t batch_index = 0;  // Current index in the batch (0 to BATCH_SIZE-1)
+uint8_t batch_index = 0; // Current index in the batch (0 to BATCH_SIZE-1)
 
 /* USER CODE END PV */
 
@@ -200,7 +200,7 @@ static void Read_MAX31856_Sensor(max31856_t *sensor, float *temp_value)
   if (sensor->sr.val != 0) {
     // Fault detected - send 0.0
     *temp_value = 0.0f;
-    
+
     // Clear fault for next reading
     max31856_clear_fault_status(sensor);
     return;
@@ -236,7 +236,7 @@ static void Send_Sensor_Data_UDP(void)
   if (err != ERR_OK) {
     // Handle send error
   }
-  
+
   // Reset batch index for next packet
   batch_index = 0;
 }
@@ -300,17 +300,17 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
-//     /* Read a received packet from the Ethernet buffers and send it
-//      to the lwIP for handling */
-//     ethernetif_input(&gnetif);
-//     /* Handle timeouts */
-//     sys_check_timeouts();
-// #if LWIP_NETIF_LINK_CALLBACK
-//     Ethernet_Link_Periodic_Handle(&gnetif);
-// #endif
-// #if LWIP_DHCP
-//     DHCP_Periodic_Handle(&gnetif);
-// #endif
+    //     /* Read a received packet from the Ethernet buffers and send it
+    //      to the lwIP for handling */
+    //     ethernetif_input(&gnetif);
+    //     /* Handle timeouts */
+    //     sys_check_timeouts();
+    // #if LWIP_NETIF_LINK_CALLBACK
+    //     Ethernet_Link_Periodic_Handle(&gnetif);
+    // #endif
+    // #if LWIP_DHCP
+    //     DHCP_Periodic_Handle(&gnetif);
+    // #endif
     /* Read a received packet from the Ethernet buffers and send it
      to the lwIP for handling */
     ethernetif_input(&gnetif);
@@ -322,28 +322,27 @@ int main(void)
 #if LWIP_DHCP
     DHCP_Periodic_Handle(&gnetif);
 #endif
-    
+
     // Collect sensor readings at configured interval
     if ((HAL_GetTick() - last_send_time) >= UDP_SEND_INTERVAL_MS) {
-        if (netif_is_up(&gnetif)) {
-            // Read all sensors and store in current batch position
-            Read_MAX31856_Sensor(&therm1, &sensor_packet.tc1_temps[batch_index]);
-            Read_MAX31856_Sensor(&therm2, &sensor_packet.tc2_temps[batch_index]);
-            Read_MAX31856_Sensor(&therm3, &sensor_packet.tc3_temps[batch_index]);
-            Read_MAX31856_Sensor(&therm4, &sensor_packet.tc4_temps[batch_index]);
-            
-            batch_index++;
-            
-            // When batch is full, send the packet
-            if (batch_index >= BATCH_SIZE) {
-                Send_Sensor_Data_UDP();
-            }
-        }
-        last_send_time = HAL_GetTick();
-    }
-        
+      if (netif_is_up(&gnetif)) {
+        // Read all sensors and store in current batch position
+        Read_MAX31856_Sensor(&therm1, &sensor_packet.tc1_temps[batch_index]);
+        Read_MAX31856_Sensor(&therm2, &sensor_packet.tc2_temps[batch_index]);
+        Read_MAX31856_Sensor(&therm3, &sensor_packet.tc3_temps[batch_index]);
+        Read_MAX31856_Sensor(&therm4, &sensor_packet.tc4_temps[batch_index]);
 
-/* USER CODE END WHILE */
+        batch_index++;
+
+        // When batch is full, send the packet
+        if (batch_index >= BATCH_SIZE) {
+          Send_Sensor_Data_UDP();
+        }
+      }
+      last_send_time = HAL_GetTick();
+    }
+
+    /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }

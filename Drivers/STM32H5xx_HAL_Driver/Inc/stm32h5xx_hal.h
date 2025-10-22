@@ -112,10 +112,11 @@ extern HAL_TickFreqTypeDef uwTickFreq;
 /** @defgroup VREFBUF_VoltageScale VREFBUF Voltage Scale
  * @{
  */
-#define VREFBUF_VOLTAGE_SCALE0 ((uint32_t) 0x00000000) /*!< Voltage reference scale 0 (VREF_OUT1)  \
-                                                        */
-#define VREFBUF_VOLTAGE_SCALE1 VREFBUF_CSR_VRS_0       /*!< Voltage reference scale 1 (VREF_OUT2) */
-#define VREFBUF_VOLTAGE_SCALE2 VREFBUF_CSR_VRS_1       /*!< Voltage reference scale 2 (VREF_OUT3) */
+#define VREFBUF_VOLTAGE_SCALE0                                                                     \
+  ((uint32_t) 0x00000000)                        /*!< Voltage reference scale 0 (VREF_OUT1)        \
+                                                  */
+#define VREFBUF_VOLTAGE_SCALE1 VREFBUF_CSR_VRS_0 /*!< Voltage reference scale 1 (VREF_OUT2) */
+#define VREFBUF_VOLTAGE_SCALE2 VREFBUF_CSR_VRS_1 /*!< Voltage reference scale 2 (VREF_OUT3) */
 #define VREFBUF_VOLTAGE_SCALE3                                                                     \
   (VREFBUF_CSR_VRS_0 | VREFBUF_CSR_VRS_1) /*!< Voltage reference scale 3 (VREF_OUT4) */
 

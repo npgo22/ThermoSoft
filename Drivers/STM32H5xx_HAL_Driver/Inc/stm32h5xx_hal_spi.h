@@ -636,8 +636,9 @@ typedef void (*pSPI_CallbackTypeDef)(
 /** @defgroup SPI_reception_fifo_status_level SPI Reception FIFO Status Level
  * @{
  */
-#define SPI_RX_FIFO_0PACKET (0x00000000UL) /* 0 or multiple of 4 packets available in the RxFIFO   \
-                                            */
+#define SPI_RX_FIFO_0PACKET                                                                        \
+  (0x00000000UL) /* 0 or multiple of 4 packets available in the RxFIFO                             \
+                  */
 #define SPI_RX_FIFO_1PACKET (SPI_SR_RXPLVL_0)
 #define SPI_RX_FIFO_2PACKET (SPI_SR_RXPLVL_1)
 #define SPI_RX_FIFO_3PACKET (SPI_SR_RXPLVL_1 | SPI_SR_RXPLVL_0)

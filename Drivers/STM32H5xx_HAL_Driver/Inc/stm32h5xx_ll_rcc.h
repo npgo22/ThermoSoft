@@ -187,9 +187,10 @@ typedef struct {
 /** @defgroup RCC_LL_EC_LSEDRIVE  LSE oscillator drive capability
  * @{
  */
-#define LL_RCC_LSEDRIVE_LOW       0x00000000U       /*!< Xtal mode lower driving capability */
-#define LL_RCC_LSEDRIVE_MEDIUMLOW RCC_BDCR_LSEDRV_0 /*!< Xtal mode medium low driving capability   \
-                                                     */
+#define LL_RCC_LSEDRIVE_LOW 0x00000000U /*!< Xtal mode lower driving capability */
+#define LL_RCC_LSEDRIVE_MEDIUMLOW                                                                  \
+  RCC_BDCR_LSEDRV_0 /*!< Xtal mode medium low driving capability                                   \
+                     */
 #define LL_RCC_LSEDRIVE_MEDIUMHIGH                                                                 \
   RCC_BDCR_LSEDRV_1                          /*!< Xtal mode medium high driving capability */
 #define LL_RCC_LSEDRIVE_HIGH RCC_BDCR_LSEDRV /*!< Xtal mode higher driving capability */
@@ -212,11 +213,13 @@ typedef struct {
 /** @defgroup RCC_LL_EC_SYS_CLKSOURCE_STATUS  System clock switch status
  * @{
  */
-#define LL_RCC_SYS_CLKSOURCE_STATUS_HSI 0x00000000U     /*!< HSI oscillator used as system clock */
-#define LL_RCC_SYS_CLKSOURCE_STATUS_CSI RCC_CFGR1_SWS_0 /*!< CSI oscillator used as system clock   \
-                                                         */
-#define LL_RCC_SYS_CLKSOURCE_STATUS_HSE RCC_CFGR1_SWS_1 /*!< HSE oscillator used as system clock   \
-                                                         */
+#define LL_RCC_SYS_CLKSOURCE_STATUS_HSI 0x00000000U /*!< HSI oscillator used as system clock */
+#define LL_RCC_SYS_CLKSOURCE_STATUS_CSI                                                            \
+  RCC_CFGR1_SWS_0 /*!< CSI oscillator used as system clock                                         \
+                   */
+#define LL_RCC_SYS_CLKSOURCE_STATUS_HSE                                                            \
+  RCC_CFGR1_SWS_1 /*!< HSE oscillator used as system clock                                         \
+                   */
 #define LL_RCC_SYS_CLKSOURCE_STATUS_PLL1                                                           \
   (RCC_CFGR1_SWS_1 | RCC_CFGR1_SWS_0) /*!< PLL1 used as system clock */
 /**
@@ -872,8 +875,9 @@ typedef struct {
 /** @defgroup RCC_LL_EC_LPUART_CLKSOURCE  Peripheral LPUARTx clock source selection
  * @{
  */
-#define LL_RCC_LPUART1_CLKSOURCE_PCLK3 0x00000000U /*!< PCLK3 clock used as LPUART1 clock source   \
-                                                    */
+#define LL_RCC_LPUART1_CLKSOURCE_PCLK3                                                             \
+  0x00000000U /*!< PCLK3 clock used as LPUART1 clock source                                        \
+               */
 #define LL_RCC_LPUART1_CLKSOURCE_PLL2Q                                                             \
   RCC_CCIPR3_LPUART1SEL_0 /*!< PLL2Q clock used as LPUART1 clock source */
 #if defined(RCC_CR_PLL3ON)
@@ -1370,11 +1374,12 @@ typedef struct {
 /** @defgroup RCC_LL_EC_RNG_CLKSOURCE  Peripheral RNG clock source selection
  * @{
  */
-#define LL_RCC_RNG_CLKSOURCE_HSI48 0x00000000U         /*!< HSI48 clock used as RNG clock source */
-#define LL_RCC_RNG_CLKSOURCE_PLL1Q RCC_CCIPR5_RNGSEL_0 /*!< PLL1 Q clock used as RNG clock source  \
-                                                        */
-#define LL_RCC_RNG_CLKSOURCE_LSE RCC_CCIPR5_RNGSEL_1   /*!< LSE clock used as RNG clock source */
-#define LL_RCC_RNG_CLKSOURCE_LSI RCC_CCIPR5_RNGSEL     /*!< LSI clock used as RNG clock source */
+#define LL_RCC_RNG_CLKSOURCE_HSI48 0x00000000U /*!< HSI48 clock used as RNG clock source */
+#define LL_RCC_RNG_CLKSOURCE_PLL1Q                                                                 \
+  RCC_CCIPR5_RNGSEL_0                                /*!< PLL1 Q clock used as RNG clock source    \
+                                                      */
+#define LL_RCC_RNG_CLKSOURCE_LSE RCC_CCIPR5_RNGSEL_1 /*!< LSE clock used as RNG clock source */
+#define LL_RCC_RNG_CLKSOURCE_LSI RCC_CCIPR5_RNGSEL   /*!< LSI clock used as RNG clock source */
 /**
  * @}
  */
@@ -1383,17 +1388,20 @@ typedef struct {
 /** @defgroup RCC_LL_EC_USB_CLKSOURCE  Peripheral USB clock source selection
  * @{
  */
-#define LL_RCC_USB_CLKSOURCE_NONE  0x00000000U         /*!< No clock used as USB clock source */
-#define LL_RCC_USB_CLKSOURCE_PLL1Q RCC_CCIPR4_USBSEL_0 /*!< PLL1 Q clock used as USB clock source  \
-                                                        */
+#define LL_RCC_USB_CLKSOURCE_NONE 0x00000000U /*!< No clock used as USB clock source */
+#define LL_RCC_USB_CLKSOURCE_PLL1Q                                                                 \
+  RCC_CCIPR4_USBSEL_0 /*!< PLL1 Q clock used as USB clock source                                   \
+                       */
 #if defined(RCC_CR_PLL3ON)
-#define LL_RCC_USB_CLKSOURCE_PLL3Q RCC_CCIPR4_USBSEL_1 /*!< PLL3 Q clock used as USB clock source  \
-                                                        */
+#define LL_RCC_USB_CLKSOURCE_PLL3Q                                                                 \
+  RCC_CCIPR4_USBSEL_1 /*!< PLL3 Q clock used as USB clock source                                   \
+                       */
 #else
-#define LL_RCC_USB_CLKSOURCE_PLL2Q RCC_CCIPR4_USBSEL_1 /*!< PLL2 Q clock used as USB clock source  \
-                                                        */
-#endif                                                 /* PLL3 */
-#define LL_RCC_USB_CLKSOURCE_HSI48 RCC_CCIPR4_USBSEL   /*!< HSI48 clock used as USB clock source */
+#define LL_RCC_USB_CLKSOURCE_PLL2Q                                                                 \
+  RCC_CCIPR4_USBSEL_1                                /*!< PLL2 Q clock used as USB clock source    \
+                                                      */
+#endif                                               /* PLL3 */
+#define LL_RCC_USB_CLKSOURCE_HSI48 RCC_CCIPR4_USBSEL /*!< HSI48 clock used as USB clock source */
 /**
  * @}
  */
@@ -1420,9 +1428,10 @@ typedef struct {
 /** @defgroup RCC_LL_EC_DAC_CLKSOURCE  Peripheral DAC low-power clock source selection
  * @{
  */
-#define LL_RCC_DAC_LP_CLKSOURCE_LSE 0x00000000U       /*!< LSE clock used as DAC low-power clock */
-#define LL_RCC_DAC_LP_CLKSOURCE_LSI RCC_CCIPR5_DACSEL /*!< LSI clock used as DAC low-power clock   \
-                                                       */
+#define LL_RCC_DAC_LP_CLKSOURCE_LSE 0x00000000U /*!< LSE clock used as DAC low-power clock */
+#define LL_RCC_DAC_LP_CLKSOURCE_LSI                                                                \
+  RCC_CCIPR5_DACSEL /*!< LSI clock used as DAC low-power clock                                     \
+                     */
 /**
  * @}
  */
@@ -1445,8 +1454,9 @@ typedef struct {
 /** @defgroup RCC_LL_EC_OCTOSPI_CLKSOURCE  Peripheral OCTOSPI kernel clock source selection
  * @{
  */
-#define LL_RCC_OSPI_CLKSOURCE_HCLK 0x00000000U /*!< AHB clock used as OctoSPI kernel clock source  \
-                                                */
+#define LL_RCC_OSPI_CLKSOURCE_HCLK                                                                 \
+  0x00000000U /*!< AHB clock used as OctoSPI kernel clock source                                   \
+               */
 #define LL_RCC_OSPI_CLKSOURCE_PLL1Q                                                                \
   RCC_CCIPR4_OCTOSPISEL_0 /*!< PLL1 Q clock used as OctoSPI kernel clock source */
 #define LL_RCC_OSPI_CLKSOURCE_PLL2R                                                                \
@@ -1861,8 +1871,9 @@ typedef struct {
 /** @defgroup RCC_LL_EC_PLL1SOURCE  PLL1 entry clock source
  * @{
  */
-#define LL_RCC_PLL1SOURCE_NONE 0x00000000U /*!< No clock selected as main PLL1 entry clock source  \
-                                            */
+#define LL_RCC_PLL1SOURCE_NONE                                                                     \
+  0x00000000U /*!< No clock selected as main PLL1 entry clock source                               \
+               */
 #define LL_RCC_PLL1SOURCE_HSI                                                                      \
   RCC_PLL1CFGR_PLL1SRC_0 /*!< HSI clock selected as main PLL1 entry clock source */
 #define LL_RCC_PLL1SOURCE_CSI                                                                      \
@@ -1898,8 +1909,9 @@ typedef struct {
 /** @defgroup RCC_LL_EC_PLL2SOURCE  PLL2 entry clock source
  * @{
  */
-#define LL_RCC_PLL2SOURCE_NONE 0x00000000U /*!< No clock selected as main PLL2 entry clock source  \
-                                            */
+#define LL_RCC_PLL2SOURCE_NONE                                                                     \
+  0x00000000U /*!< No clock selected as main PLL2 entry clock source                               \
+               */
 #define LL_RCC_PLL2SOURCE_HSI                                                                      \
   RCC_PLL2CFGR_PLL2SRC_0 /*!< HSI clock selected as main PLL2 entry clock source */
 #define LL_RCC_PLL2SOURCE_CSI                                                                      \
@@ -1914,8 +1926,9 @@ typedef struct {
 /** @defgroup RCC_LL_EC_PLL3SOURCE  PLL3 entry clock source
  * @{
  */
-#define LL_RCC_PLL3SOURCE_NONE 0x00000000U /*!< No clock selected as main PLL3 entry clock source  \
-                                            */
+#define LL_RCC_PLL3SOURCE_NONE                                                                     \
+  0x00000000U /*!< No clock selected as main PLL3 entry clock source                               \
+               */
 #define LL_RCC_PLL3SOURCE_HSI                                                                      \
   RCC_PLL3CFGR_PLL3SRC_0 /*!< HSI clock selected as main PLL3 entry clock source */
 #define LL_RCC_PLL3SOURCE_CSI                                                                      \
@@ -1951,11 +1964,13 @@ typedef struct {
 #define LL_RCC_SYSCLK_NSEC                                                                         \
   0U /*!< SYSCLK clock; STOPWUCK and MCO output configuration secure/non-secure access */
 #define LL_RCC_PRESCALERS_SEC                                                                      \
-  RCC_SECCFGR_PRESCSEC            /*!< AHBx/APBx prescaler configuration secure-only access */
-#define LL_RCC_PRESCALERS_NSEC 0U /*!< AHBx/APBx prescaler configuration secure/non-secure access  \
-                                   */
-#define LL_RCC_PLL1_SEC RCC_SECCFGR_PLL1SEC /*!< main PLL clock configuration secure-only access   \
-                                             */
+  RCC_SECCFGR_PRESCSEC /*!< AHBx/APBx prescaler configuration secure-only access */
+#define LL_RCC_PRESCALERS_NSEC                                                                     \
+  0U /*!< AHBx/APBx prescaler configuration secure/non-secure access                               \
+      */
+#define LL_RCC_PLL1_SEC                                                                            \
+  RCC_SECCFGR_PLL1SEC              /*!< main PLL clock configuration secure-only access            \
+                                    */
 #define LL_RCC_PLL1_NSEC        0U /*!< main PLL clock configuration secure/non-secure access */
 #define LL_RCC_PLL2_SEC         RCC_SECCFGR_PLL2SEC /*!< PLL2 clock configuration secure-only access */
 #define LL_RCC_PLL2_NSEC        0U /*!< PLL2 clock configuration secure/non-secure access */
