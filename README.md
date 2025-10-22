@@ -8,7 +8,7 @@ The codebase currently follows the following repo to implement LwIP since it is 
 
 It currently follows their example, with LED pin PC7 to represent link status. DHCP is currently disabled, but may be enabled in the future as needed.
 
-Currently, CMAKE is used.
+Currently, CMake is used.
 
 
 ## TODO
