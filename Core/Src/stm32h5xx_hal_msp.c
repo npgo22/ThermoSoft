@@ -119,6 +119,7 @@ void HAL_DCACHE_MspDeInit(DCACHE_HandleTypeDef* hdcache)
 
 }
 
+#if 0  // HAL_ETH_MspInit is defined in ethernetif.c
 /**
   * @brief ETH MSP Initialization
   * This function configures the hardware resources used in this example
@@ -180,6 +181,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* heth)
   }
 
 }
+#endif  // HAL_ETH_MspInit is defined in ethernetif.c
 
 /**
   * @brief ETH MSP De-Initialization
