@@ -41,24 +41,24 @@
 
 #include "lwip/opt.h"
 
-#if LWIP_IPV6  /* don't build if not configured for use in lwipopts.h */
+#if LWIP_IPV6 /* don't build if not configured for use in lwipopts.h */
 
+#include "lwip/debug.h"
 #include "lwip/def.h"
-#include "lwip/mem.h"
-#include "lwip/netif.h"
+#include "lwip/dhcp6.h"
+#include "lwip/icmp6.h"
 #include "lwip/ip.h"
 #include "lwip/ip6.h"
 #include "lwip/ip6_addr.h"
 #include "lwip/ip6_frag.h"
-#include "lwip/icmp6.h"
-#include "lwip/priv/raw_priv.h"
-#include "lwip/udp.h"
-#include "lwip/priv/tcp_priv.h"
-#include "lwip/dhcp6.h"
-#include "lwip/nd6.h"
+#include "lwip/mem.h"
 #include "lwip/mld6.h"
-#include "lwip/debug.h"
+#include "lwip/nd6.h"
+#include "lwip/netif.h"
+#include "lwip/priv/raw_priv.h"
+#include "lwip/priv/tcp_priv.h"
 #include "lwip/stats.h"
+#include "lwip/udp.h"
 
 #ifdef LWIP_HOOK_FILENAME
 #include LWIP_HOOK_FILENAME
@@ -82,8 +82,7 @@
  * @param dest the destination IPv6 address for which to find the route
  * @return the netif on which to send to reach dest
  */
-struct netif *
-ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
+struct netif *ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
 {
 #if LWIP_SINGLE_NETIF
   LWIP_UNUSED_ARG(src);
@@ -113,9 +112,9 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
     IP6_ADDR_ZONECHECK(dest);
     /* Find a netif based on the zone. For custom mappings, one zone may map
      * to multiple netifs, so find one that can actually send a packet. */
-    NETIF_FOREACH(netif) {
-      if (ip6_addr_test_zone(dest, netif) &&
-          netif_is_up(netif) && netif_is_link_up(netif)) {
+    NETIF_FOREACH(netif)
+    {
+      if (ip6_addr_test_zone(dest, netif) && netif_is_up(netif) && netif_is_link_up(netif)) {
         return netif;
       }
     }
@@ -140,9 +139,8 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
    * wants, regardless of whether the source address is scoped. Finally, some
    * of this story also applies if scoping is disabled altogether. */
 #if LWIP_IPV6_SCOPES
-  if (ip6_addr_has_scope(dest, IP6_UNKNOWN) ||
-      ip6_addr_has_scope(src, IP6_UNICAST) ||
-#else /* LWIP_IPV6_SCOPES */
+  if (ip6_addr_has_scope(dest, IP6_UNKNOWN) || ip6_addr_has_scope(src, IP6_UNICAST) ||
+#else  /* LWIP_IPV6_SCOPES */
   if (ip6_addr_islinklocal(dest) || ip6_addr_ismulticast_iflocal(dest) ||
       ip6_addr_ismulticast_linklocal(dest) || ip6_addr_islinklocal(src) ||
 #endif /* LWIP_IPV6_SCOPES */
@@ -150,9 +148,9 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
 #if LWIP_IPV6_SCOPES
     if (ip6_addr_has_zone(src)) {
       /* Find a netif matching the source zone (relatively cheap). */
-      NETIF_FOREACH(netif) {
-        if (netif_is_up(netif) && netif_is_link_up(netif) &&
-            ip6_addr_test_zone(src, netif)) {
+      NETIF_FOREACH(netif)
+      {
+        if (netif_is_up(netif) && netif_is_link_up(netif) && ip6_addr_test_zone(src, netif)) {
           return netif;
         }
       }
@@ -160,7 +158,8 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
 #endif /* LWIP_IPV6_SCOPES */
     {
       /* Find a netif matching the source address (relatively expensive). */
-      NETIF_FOREACH(netif) {
+      NETIF_FOREACH(netif)
+      {
         if (!netif_is_up(netif) || !netif_is_link_up(netif)) {
           continue;
         }
@@ -193,7 +192,8 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
    * such, the destination address may still match a local address, and so we
    * still need to check for exact matches here. By (lwIP) policy, statically
    * configured addresses do always have an implied local /64 subnet. */
-  NETIF_FOREACH(netif) {
+  NETIF_FOREACH(netif)
+  {
     if (!netif_is_up(netif) || !netif_is_link_up(netif)) {
       continue;
     }
@@ -201,7 +201,7 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
       if (ip6_addr_isvalid(netif_ip6_addr_state(netif, i)) &&
           ip6_addr_net_eq(dest, netif_ip6_addr(netif, i)) &&
           (netif_ip6_addr_isstatic(netif, i) ||
-          ip6_addr_nethost_eq(dest, netif_ip6_addr(netif, i)))) {
+           ip6_addr_nethost_eq(dest, netif_ip6_addr(netif, i)))) {
         return netif;
       }
     }
@@ -216,7 +216,8 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
   /* Try with the netif that matches the source address. Given the earlier rule
    * for scoped source addresses, this applies to unscoped addresses only. */
   if (!ip6_addr_isany(src)) {
-    NETIF_FOREACH(netif) {
+    NETIF_FOREACH(netif)
+    {
       if (!netif_is_up(netif) || !netif_is_link_up(netif)) {
         continue;
       }
@@ -237,7 +238,8 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
       return netif_default;
     }
     /* default netif is not up, just use any netif for loopback traffic */
-    NETIF_FOREACH(netif) {
+    NETIF_FOREACH(netif)
+    {
       if (netif_is_up(netif)) {
         return netif;
       }
@@ -279,8 +281,7 @@ ip6_route(const ip6_addr_t *src, const ip6_addr_t *dest)
  * @return the most suitable source address to use, or NULL if no suitable
  *         source address is found
  */
-const ip_addr_t *
-ip6_select_source_address(struct netif *netif, const ip6_addr_t *dest)
+const ip_addr_t *ip6_select_source_address(struct netif *netif, const ip6_addr_t *dest)
 {
   const ip_addr_t *best_addr;
   const ip6_addr_t *cand_addr;
@@ -339,8 +340,9 @@ ip6_select_source_address(struct netif *netif, const ip6_addr_t *dest)
     if ((best_addr == NULL) || /* no alternative yet */
         ((cand_scope < best_scope) && (cand_scope >= dest_scope)) ||
         ((cand_scope > best_scope) && (best_scope < dest_scope)) || /* Rule 2 */
-        ((cand_scope == best_scope) && ((cand_pref > best_pref) || /* Rule 3 */
-        ((cand_pref == best_pref) && (cand_bits > best_bits))))) { /* Rule 8 */
+        ((cand_scope == best_scope) &&
+         ((cand_pref > best_pref) ||                                 /* Rule 3 */
+          ((cand_pref == best_pref) && (cand_bits > best_bits))))) { /* Rule 8 */
       /* We found a new "winning" candidate. */
       best_addr = netif_ip_addr6(netif, i);
       best_scope = cand_scope;
@@ -362,8 +364,7 @@ ip6_select_source_address(struct netif *netif, const ip6_addr_t *dest)
  * @param iphdr the IPv6 header of the input packet
  * @param inp the netif on which this packet was received
  */
-static void
-ip6_forward(struct pbuf *p, struct ip6_hdr *iphdr, struct netif *inp)
+static void ip6_forward(struct pbuf *p, struct ip6_hdr *iphdr, struct netif *inp)
 {
   struct netif *netif;
 
@@ -379,15 +380,14 @@ ip6_forward(struct pbuf *p, struct ip6_hdr *iphdr, struct netif *inp)
   /* Find network interface where to forward this IP packet to. */
   netif = ip6_route(IP6_ADDR_ANY6, ip6_current_dest_addr());
   if (netif == NULL) {
-    LWIP_DEBUGF(IP6_DEBUG, ("ip6_forward: no route for %"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F"\n",
-        IP6_ADDR_BLOCK1(ip6_current_dest_addr()),
-        IP6_ADDR_BLOCK2(ip6_current_dest_addr()),
-        IP6_ADDR_BLOCK3(ip6_current_dest_addr()),
-        IP6_ADDR_BLOCK4(ip6_current_dest_addr()),
-        IP6_ADDR_BLOCK5(ip6_current_dest_addr()),
-        IP6_ADDR_BLOCK6(ip6_current_dest_addr()),
-        IP6_ADDR_BLOCK7(ip6_current_dest_addr()),
-        IP6_ADDR_BLOCK8(ip6_current_dest_addr())));
+    LWIP_DEBUGF(IP6_DEBUG,
+                ("ip6_forward: no route for %" X16_F ":%" X16_F ":%" X16_F ":%" X16_F ":%" X16_F
+                 ":%" X16_F ":%" X16_F ":%" X16_F "\n",
+                 IP6_ADDR_BLOCK1(ip6_current_dest_addr()), IP6_ADDR_BLOCK2(ip6_current_dest_addr()),
+                 IP6_ADDR_BLOCK3(ip6_current_dest_addr()), IP6_ADDR_BLOCK4(ip6_current_dest_addr()),
+                 IP6_ADDR_BLOCK5(ip6_current_dest_addr()), IP6_ADDR_BLOCK6(ip6_current_dest_addr()),
+                 IP6_ADDR_BLOCK7(ip6_current_dest_addr()),
+                 IP6_ADDR_BLOCK8(ip6_current_dest_addr())));
 #if LWIP_ICMP6
     /* Don't send ICMP messages in response to ICMP messages */
     if (IP6H_NEXTH(iphdr) != IP6_NEXTH_ICMP6) {
@@ -404,9 +404,10 @@ ip6_forward(struct pbuf *p, struct ip6_hdr *iphdr, struct netif *inp)
    * that the address is properly zoned here, so we can safely use has_zone.
    * Also skip packets with a loopback source address (link-local implied). */
   if ((ip6_addr_has_zone(ip6_current_src_addr()) &&
-      !ip6_addr_test_zone(ip6_current_src_addr(), netif)) ||
+       !ip6_addr_test_zone(ip6_current_src_addr(), netif)) ||
       ip6_addr_isloopback(ip6_current_src_addr())) {
-    LWIP_DEBUGF(IP6_DEBUG, ("ip6_forward: not forwarding packet beyond its source address zone.\n"));
+    LWIP_DEBUGF(IP6_DEBUG,
+                ("ip6_forward: not forwarding packet beyond its source address zone.\n"));
     IP6_STATS_INC(ip6.rterr);
     IP6_STATS_INC(ip6.drop);
     return;
@@ -446,15 +447,13 @@ ip6_forward(struct pbuf *p, struct ip6_hdr *iphdr, struct netif *inp)
     return;
   }
 
-  LWIP_DEBUGF(IP6_DEBUG, ("ip6_forward: forwarding packet to %"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F"\n",
-      IP6_ADDR_BLOCK1(ip6_current_dest_addr()),
-      IP6_ADDR_BLOCK2(ip6_current_dest_addr()),
-      IP6_ADDR_BLOCK3(ip6_current_dest_addr()),
-      IP6_ADDR_BLOCK4(ip6_current_dest_addr()),
-      IP6_ADDR_BLOCK5(ip6_current_dest_addr()),
-      IP6_ADDR_BLOCK6(ip6_current_dest_addr()),
-      IP6_ADDR_BLOCK7(ip6_current_dest_addr()),
-      IP6_ADDR_BLOCK8(ip6_current_dest_addr())));
+  LWIP_DEBUGF(IP6_DEBUG,
+              ("ip6_forward: forwarding packet to %" X16_F ":%" X16_F ":%" X16_F ":%" X16_F
+               ":%" X16_F ":%" X16_F ":%" X16_F ":%" X16_F "\n",
+               IP6_ADDR_BLOCK1(ip6_current_dest_addr()), IP6_ADDR_BLOCK2(ip6_current_dest_addr()),
+               IP6_ADDR_BLOCK3(ip6_current_dest_addr()), IP6_ADDR_BLOCK4(ip6_current_dest_addr()),
+               IP6_ADDR_BLOCK5(ip6_current_dest_addr()), IP6_ADDR_BLOCK6(ip6_current_dest_addr()),
+               IP6_ADDR_BLOCK7(ip6_current_dest_addr()), IP6_ADDR_BLOCK8(ip6_current_dest_addr())));
 
   /* transmit pbuf on chosen interface */
   netif->output_ip6(netif, p, ip6_current_dest_addr());
@@ -465,16 +464,15 @@ ip6_forward(struct pbuf *p, struct ip6_hdr *iphdr, struct netif *inp)
 #endif /* LWIP_IPV6_FORWARD */
 
 /** Return true if the current input packet should be accepted on this netif */
-static int
-ip6_input_accept(struct netif *netif)
+static int ip6_input_accept(struct netif *netif)
 {
   /* interface is up? */
   if (netif_is_up(netif)) {
     u8_t i;
     /* unicast to this interface address? address configured? */
     /* If custom scopes are used, the destination zone will be tested as
-      * part of the local-address comparison, but we need to test the source
-      * scope as well (e.g., is this interface on the same link?). */
+     * part of the local-address comparison, but we need to test the source
+     * scope as well (e.g., is this interface on the same link?). */
     for (i = 0; i < LWIP_IPV6_NUM_ADDRESSES; i++) {
       if (ip6_addr_isvalid(netif_ip6_addr_state(netif, i)) &&
           ip6_addr_eq(ip6_current_dest_addr(), netif_ip6_addr(netif, i))
@@ -505,17 +503,16 @@ ip6_input_accept(struct netif *netif)
  * @return ERR_OK if the packet was processed (could return ERR_* if it wasn't
  *         processed, but currently always returns ERR_OK)
  */
-err_t
-ip6_input(struct pbuf *p, struct netif *inp)
+err_t ip6_input(struct pbuf *p, struct netif *inp)
 {
   struct ip6_hdr *ip6hdr;
   struct netif *netif;
   const u8_t *nexth;
   u16_t hlen, hlen_tot; /* the current header length */
-#if 0 /*IP_ACCEPT_LINK_LAYER_ADDRESSING*/
+#if 0                   /*IP_ACCEPT_LINK_LAYER_ADDRESSING*/
   @todo
   int check_ip_src=1;
-#endif /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
+#endif                  /* IP_ACCEPT_LINK_LAYER_ADDRESSING */
 #if LWIP_RAW
   raw_input_state_t raw_status;
 #endif /* LWIP_RAW */
@@ -525,10 +522,10 @@ ip6_input(struct pbuf *p, struct netif *inp)
   IP6_STATS_INC(ip6.recv);
 
   /* identify the IP header */
-  ip6hdr = (struct ip6_hdr *)p->payload;
+  ip6hdr = (struct ip6_hdr *) p->payload;
   if (IP6H_V(ip6hdr) != 6) {
-    LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_WARNING, ("IPv6 packet dropped due to bad version number %"U32_F"\n",
-        IP6H_V(ip6hdr)));
+    LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_WARNING,
+                ("IPv6 packet dropped due to bad version number %" U32_F "\n", IP6H_V(ip6hdr)));
     pbuf_free(p);
     IP6_STATS_INC(ip6.err);
     IP6_STATS_INC(ip6.drop);
@@ -546,13 +543,15 @@ ip6_input(struct pbuf *p, struct netif *inp)
   if ((IP6_HLEN > p->len) || (IP6H_PLEN(ip6hdr) > (p->tot_len - IP6_HLEN))) {
     if (IP6_HLEN > p->len) {
       LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
-        ("IPv6 header (len %"U16_F") does not fit in first pbuf (len %"U16_F"), IP packet dropped.\n",
-            (u16_t)IP6_HLEN, p->len));
+                  ("IPv6 header (len %" U16_F ") does not fit in first pbuf (len %" U16_F
+                   "), IP packet dropped.\n",
+                   (u16_t) IP6_HLEN, p->len));
     }
     if ((IP6H_PLEN(ip6hdr) + IP6_HLEN) > p->tot_len) {
       LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
-        ("IPv6 (plen %"U16_F") is longer than pbuf (len %"U16_F"), IP packet dropped.\n",
-            (u16_t)(IP6H_PLEN(ip6hdr) + IP6_HLEN), p->tot_len));
+                  ("IPv6 (plen %" U16_F ") is longer than pbuf (len %" U16_F
+                   "), IP packet dropped.\n",
+                   (u16_t) (IP6H_PLEN(ip6hdr) + IP6_HLEN), p->tot_len));
     }
     /* free (drop) packet pbufs */
     pbuf_free(p);
@@ -563,7 +562,7 @@ ip6_input(struct pbuf *p, struct netif *inp)
 
   /* Trim pbuf. This should have been done at the netif layer,
    * but we'll do it anyway just to be sure that its done. */
-  pbuf_realloc(p, (u16_t)(IP6_HLEN + IP6H_PLEN(ip6hdr)));
+  pbuf_realloc(p, (u16_t) (IP6_HLEN + IP6H_PLEN(ip6hdr)));
 
   /* copy IP addresses to aligned ip6_addr_t */
   ip_addr_copy_from_ip6_packed(ip_data.current_iphdr_dest, ip6hdr->dest);
@@ -572,8 +571,8 @@ ip6_input(struct pbuf *p, struct netif *inp)
   /* Don't accept virtual IPv4 mapped IPv6 addresses.
    * Don't accept multicast source addresses. */
   if (ip6_addr_isipv4mappedipv6(ip_2_ip6(&ip_data.current_iphdr_dest)) ||
-     ip6_addr_isipv4mappedipv6(ip_2_ip6(&ip_data.current_iphdr_src)) ||
-     ip6_addr_ismulticast(ip_2_ip6(&ip_data.current_iphdr_src))) {
+      ip6_addr_isipv4mappedipv6(ip_2_ip6(&ip_data.current_iphdr_src)) ||
+      ip6_addr_ismulticast(ip_2_ip6(&ip_data.current_iphdr_src))) {
     /* free (drop) packet pbufs */
     pbuf_free(p);
     IP6_STATS_INC(ip6.err);
@@ -603,7 +602,7 @@ ip6_input(struct pbuf *p, struct netif *inp)
     else if (mld6_lookfor_group(inp, ip6_current_dest_addr())) {
       netif = inp;
     }
-#else /* LWIP_IPV6_MLD */
+#else  /* LWIP_IPV6_MLD */
     else if (ip6_addr_issolicitednode(ip6_current_dest_addr())) {
       u8_t i;
       /* Filter solicited node packets when MLD is not enabled
@@ -614,7 +613,7 @@ ip6_input(struct pbuf *p, struct netif *inp)
             ip6_addr_solicitednode_eq(ip6_current_dest_addr(), netif_ip6_addr(inp, i))) {
           netif = inp;
           LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: solicited node packet accepted on interface %c%c\n",
-              netif->name[0], netif->name[1]));
+                                  netif->name[0], netif->name[1]));
           break;
         }
       }
@@ -632,8 +631,8 @@ ip6_input(struct pbuf *p, struct netif *inp)
       netif = NULL;
 #if !IPV6_CUSTOM_SCOPES
       /* Shortcut: stop looking for other interfaces if either the source or
-        * the destination has a scope constrained to this interface. Custom
-        * scopes may break the 1:1 link/interface mapping, however. */
+       * the destination has a scope constrained to this interface. Custom
+       * scopes may break the 1:1 link/interface mapping, however. */
       if (ip6_addr_islinklocal(ip6_current_dest_addr()) ||
           ip6_addr_islinklocal(ip6_current_src_addr())) {
         goto netif_found;
@@ -641,18 +640,19 @@ ip6_input(struct pbuf *p, struct netif *inp)
 #endif /* !IPV6_CUSTOM_SCOPES */
 #if !LWIP_NETIF_LOOPBACK || LWIP_HAVE_LOOPIF
       /* The loopback address is to be considered link-local. Packets to it
-        * should be dropped on other interfaces, as per RFC 4291 Sec. 2.5.3.
-        * Its implied scope means packets *from* the loopback address should
-        * not be accepted on other interfaces, either. These requirements
-        * cannot be implemented in the case that loopback traffic is sent
-        * across a non-loopback interface, however. */
+       * should be dropped on other interfaces, as per RFC 4291 Sec. 2.5.3.
+       * Its implied scope means packets *from* the loopback address should
+       * not be accepted on other interfaces, either. These requirements
+       * cannot be implemented in the case that loopback traffic is sent
+       * across a non-loopback interface, however. */
       if (ip6_addr_isloopback(ip6_current_dest_addr()) ||
           ip6_addr_isloopback(ip6_current_src_addr())) {
         goto netif_found;
       }
 #endif /* !LWIP_NETIF_LOOPBACK || LWIP_HAVE_LOOPIF */
 #if !LWIP_SINGLE_NETIF
-      NETIF_FOREACH(netif) {
+      NETIF_FOREACH(netif)
+      {
         if (netif == inp) {
           /* we checked that before already */
           continue;
@@ -663,9 +663,9 @@ ip6_input(struct pbuf *p, struct netif *inp)
       }
 #endif /* !LWIP_SINGLE_NETIF */
     }
-netif_found:
+  netif_found:
     LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet accepted on interface %c%c\n",
-        netif ? netif->name[0] : 'X', netif? netif->name[1] : 'X'));
+                            netif ? netif->name[0] : 'X', netif ? netif->name[1] : 'X'));
   }
 
   /* "::" packet source address? (used in duplicate address detection) */
@@ -705,35 +705,35 @@ netif_found:
 
   LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: \n"));
   ip6_debug_print(p);
-  LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: p->len %"U16_F" p->tot_len %"U16_F"\n", p->len, p->tot_len));
+  LWIP_DEBUGF(IP6_DEBUG,
+              ("ip6_input: p->len %" U16_F " p->tot_len %" U16_F "\n", p->len, p->tot_len));
 
   /* Move to payload. */
   pbuf_remove_header(p, IP6_HLEN);
 
   /* Process known option extension headers, if present. */
-  while (*nexth != IP6_NEXTH_NONE)
-  {
+  while (*nexth != IP6_NEXTH_NONE) {
     switch (*nexth) {
-    case IP6_NEXTH_HOPBYHOP:
-    {
+    case IP6_NEXTH_HOPBYHOP: {
       s32_t opt_offset;
       struct ip6_hbh_hdr *hbh_hdr;
       struct ip6_opt_hdr *opt_hdr;
       LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with Hop-by-Hop options header\n"));
 
       /* Get and check the header length, while staying in packet bounds. */
-      hbh_hdr = (struct ip6_hbh_hdr *)p->payload;
+      hbh_hdr = (struct ip6_hbh_hdr *) p->payload;
 
       /* Get next header type. */
       nexth = &IP6_HBH_NEXTH(hbh_hdr);
 
       /* Get the header length. */
-      hlen = (u16_t)(8 * (1 + hbh_hdr->_hlen));
+      hlen = (u16_t) (8 * (1 + hbh_hdr->_hlen));
 
       if ((p->len < 8) || (hlen > p->len)) {
         LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
-          ("IPv6 options header (hlen %"U16_F") does not fit in first pbuf (len %"U16_F"), IPv6 packet dropped.\n",
-              hlen, p->len));
+                    ("IPv6 options header (hlen %" U16_F ") does not fit in first pbuf (len %" U16_F
+                     "), IPv6 packet dropped.\n",
+                     hlen, p->len));
         /* free (drop) packet pbufs */
         pbuf_free(p);
         IP6_STATS_INC(ip6.lenerr);
@@ -741,15 +741,14 @@ netif_found:
         goto ip6_input_cleanup;
       }
 
-      hlen_tot = (u16_t)(hlen_tot + hlen);
+      hlen_tot = (u16_t) (hlen_tot + hlen);
 
       /* The extended option header starts right after Hop-by-Hop header. */
       opt_offset = IP6_HBH_HLEN;
-      while (opt_offset < hlen)
-      {
+      while (opt_offset < hlen) {
         s32_t opt_dlen = 0;
 
-        opt_hdr = (struct ip6_opt_hdr *)((u8_t *)hbh_hdr + opt_offset);
+        opt_hdr = (struct ip6_opt_hdr *) ((u8_t *) hbh_hdr + opt_offset);
 
         switch (IP6_OPT_TYPE(opt_hdr)) {
         /* @todo: process IPV6 Hop-by-Hop option data */
@@ -771,14 +770,16 @@ netif_found:
           switch (IP6_OPT_TYPE_ACTION(opt_hdr)) {
           case 1:
             /* Discard the packet. */
-            LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with invalid Hop-by-Hop option type dropped.\n"));
+            LWIP_DEBUGF(IP6_DEBUG,
+                        ("ip6_input: packet with invalid Hop-by-Hop option type dropped.\n"));
             pbuf_free(p);
             IP6_STATS_INC(ip6.drop);
             goto ip6_input_cleanup;
           case 2:
             /* Send ICMP Parameter Problem */
             icmp6_param_problem(p, ICMP6_PP_OPTION, opt_hdr);
-            LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with invalid Hop-by-Hop option type dropped.\n"));
+            LWIP_DEBUGF(IP6_DEBUG,
+                        ("ip6_input: packet with invalid Hop-by-Hop option type dropped.\n"));
             pbuf_free(p);
             IP6_STATS_INC(ip6.drop);
             goto ip6_input_cleanup;
@@ -787,7 +788,8 @@ netif_found:
             if (!ip6_addr_ismulticast(ip6_current_dest_addr())) {
               icmp6_param_problem(p, ICMP6_PP_OPTION, opt_hdr);
             }
-            LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with invalid Hop-by-Hop option type dropped.\n"));
+            LWIP_DEBUGF(IP6_DEBUG,
+                        ("ip6_input: packet with invalid Hop-by-Hop option type dropped.\n"));
             pbuf_free(p);
             IP6_STATS_INC(ip6.drop);
             goto ip6_input_cleanup;
@@ -805,14 +807,13 @@ netif_found:
       pbuf_remove_header(p, hlen);
       break;
     }
-    case IP6_NEXTH_DESTOPTS:
-    {
+    case IP6_NEXTH_DESTOPTS: {
       s32_t opt_offset;
       struct ip6_dest_hdr *dest_hdr;
       struct ip6_opt_hdr *opt_hdr;
       LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with Destination options header\n"));
 
-      dest_hdr = (struct ip6_dest_hdr *)p->payload;
+      dest_hdr = (struct ip6_dest_hdr *) p->payload;
 
       /* Get next header type. */
       nexth = &IP6_DEST_NEXTH(dest_hdr);
@@ -821,8 +822,9 @@ netif_found:
       hlen = 8 * (1 + dest_hdr->_hlen);
       if ((p->len < 8) || (hlen > p->len)) {
         LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
-          ("IPv6 options header (hlen %"U16_F") does not fit in first pbuf (len %"U16_F"), IPv6 packet dropped.\n",
-              hlen, p->len));
+                    ("IPv6 options header (hlen %" U16_F ") does not fit in first pbuf (len %" U16_F
+                     "), IPv6 packet dropped.\n",
+                     hlen, p->len));
         /* free (drop) packet pbufs */
         pbuf_free(p);
         IP6_STATS_INC(ip6.lenerr);
@@ -830,18 +832,16 @@ netif_found:
         goto ip6_input_cleanup;
       }
 
-      hlen_tot = (u16_t)(hlen_tot + hlen);
+      hlen_tot = (u16_t) (hlen_tot + hlen);
 
       /* The extended option header starts right after Destination header. */
       opt_offset = IP6_DEST_HLEN;
-      while (opt_offset < hlen)
-      {
+      while (opt_offset < hlen) {
         s32_t opt_dlen = 0;
 
-        opt_hdr = (struct ip6_opt_hdr *)((u8_t *)dest_hdr + opt_offset);
+        opt_hdr = (struct ip6_opt_hdr *) ((u8_t *) dest_hdr + opt_offset);
 
-        switch (IP6_OPT_TYPE(opt_hdr))
-        {
+        switch (IP6_OPT_TYPE(opt_hdr)) {
         /* @todo: process IPV6 Destination option data */
         case IP6_PAD1_OPTION:
           /* PAD1 option deosn't have length and value field */
@@ -861,18 +861,19 @@ netif_found:
           break;
         default:
           /* Check 2 MSB of Destination header type. */
-          switch (IP6_OPT_TYPE_ACTION(opt_hdr))
-          {
+          switch (IP6_OPT_TYPE_ACTION(opt_hdr)) {
           case 1:
             /* Discard the packet. */
-            LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with invalid destination option type dropped.\n"));
+            LWIP_DEBUGF(IP6_DEBUG,
+                        ("ip6_input: packet with invalid destination option type dropped.\n"));
             pbuf_free(p);
             IP6_STATS_INC(ip6.drop);
             goto ip6_input_cleanup;
           case 2:
             /* Send ICMP Parameter Problem */
             icmp6_param_problem(p, ICMP6_PP_OPTION, opt_hdr);
-            LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with invalid destination option type dropped.\n"));
+            LWIP_DEBUGF(IP6_DEBUG,
+                        ("ip6_input: packet with invalid destination option type dropped.\n"));
             pbuf_free(p);
             IP6_STATS_INC(ip6.drop);
             goto ip6_input_cleanup;
@@ -881,7 +882,8 @@ netif_found:
             if (!ip6_addr_ismulticast(ip6_current_dest_addr())) {
               icmp6_param_problem(p, ICMP6_PP_OPTION, opt_hdr);
             }
-            LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with invalid destination option type dropped.\n"));
+            LWIP_DEBUGF(IP6_DEBUG,
+                        ("ip6_input: packet with invalid destination option type dropped.\n"));
             pbuf_free(p);
             IP6_STATS_INC(ip6.drop);
             goto ip6_input_cleanup;
@@ -900,12 +902,11 @@ netif_found:
       pbuf_remove_header(p, hlen);
       break;
     }
-    case IP6_NEXTH_ROUTING:
-    {
+    case IP6_NEXTH_ROUTING: {
       struct ip6_rout_hdr *rout_hdr;
       LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with Routing header\n"));
 
-      rout_hdr = (struct ip6_rout_hdr *)p->payload;
+      rout_hdr = (struct ip6_rout_hdr *) p->payload;
 
       /* Get next header type. */
       nexth = &IP6_ROUT_NEXTH(rout_hdr);
@@ -915,8 +916,9 @@ netif_found:
 
       if ((p->len < 8) || (hlen > p->len)) {
         LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
-          ("IPv6 options header (hlen %"U16_F") does not fit in first pbuf (len %"U16_F"), IPv6 packet dropped.\n",
-              hlen, p->len));
+                    ("IPv6 options header (hlen %" U16_F ") does not fit in first pbuf (len %" U16_F
+                     "), IPv6 packet dropped.\n",
+                     hlen, p->len));
         /* free (drop) packet pbufs */
         pbuf_free(p);
         IP6_STATS_INC(ip6.lenerr);
@@ -925,7 +927,7 @@ netif_found:
       }
 
       /* Skip over this header. */
-      hlen_tot = (u16_t)(hlen_tot + hlen);
+      hlen_tot = (u16_t) (hlen_tot + hlen);
 
       /* if segment left value is 0 in routing header, ignore the option */
       if (IP6_ROUT_SEG_LEFT(rout_hdr)) {
@@ -939,8 +941,7 @@ netif_found:
           goto ip6_input_cleanup;
         }
 
-        switch (IP6_ROUT_TYPE(rout_hdr))
-        {
+        switch (IP6_ROUT_TYPE(rout_hdr)) {
         /* TODO: process routing by the type */
         case IP6_ROUT_TYPE2:
           break;
@@ -959,12 +960,11 @@ netif_found:
       pbuf_remove_header(p, hlen);
       break;
     }
-    case IP6_NEXTH_FRAGMENT:
-    {
+    case IP6_NEXTH_FRAGMENT: {
       struct ip6_frag_hdr *frag_hdr;
       LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with Fragment header\n"));
 
-      frag_hdr = (struct ip6_frag_hdr *)p->payload;
+      frag_hdr = (struct ip6_frag_hdr *) p->payload;
 
       /* Get next header type. */
       nexth = &IP6_FRAG_NEXTH(frag_hdr);
@@ -975,8 +975,9 @@ netif_found:
       /* Make sure this header fits in current pbuf. */
       if (hlen > p->len) {
         LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
-          ("IPv6 options header (hlen %"U16_F") does not fit in first pbuf (len %"U16_F"), IPv6 packet dropped.\n",
-              hlen, p->len));
+                    ("IPv6 options header (hlen %" U16_F ") does not fit in first pbuf (len %" U16_F
+                     "), IPv6 packet dropped.\n",
+                     hlen, p->len));
         /* free (drop) packet pbufs */
         pbuf_free(p);
         IP6_FRAG_STATS_INC(ip6_frag.lenerr);
@@ -984,7 +985,7 @@ netif_found:
         goto ip6_input_cleanup;
       }
 
-      hlen_tot = (u16_t)(hlen_tot + hlen);
+      hlen_tot = (u16_t) (hlen_tot + hlen);
 
       /* check payload length is multiple of 8 octets when mbit is set */
       if (IP6_FRAG_MBIT(frag_hdr) && (IP6H_PLEN(ip6hdr) & 0x7)) {
@@ -997,8 +998,7 @@ netif_found:
       }
 
       /* Offset == 0 and more_fragments == 0? */
-      if ((frag_hdr->_fragment_offset &
-           PP_HTONS(IP6_FRAG_OFFSET_MASK | IP6_FRAG_MORE_FLAG)) == 0) {
+      if ((frag_hdr->_fragment_offset & PP_HTONS(IP6_FRAG_OFFSET_MASK | IP6_FRAG_MORE_FLAG)) == 0) {
         /* This is a 1-fragment packet. Skip this header and continue. */
         pbuf_remove_header(p, hlen);
       } else {
@@ -1013,14 +1013,15 @@ netif_found:
 
         /* Returned p point to IPv6 header.
          * Update all our variables and pointers and continue. */
-        ip6hdr = (struct ip6_hdr *)p->payload;
+        ip6hdr = (struct ip6_hdr *) p->payload;
         nexth = &IP6H_NEXTH(ip6hdr);
         hlen = hlen_tot = IP6_HLEN;
         pbuf_remove_header(p, IP6_HLEN);
 
-#else /* LWIP_IPV6_REASS */
+#else  /* LWIP_IPV6_REASS */
         /* free (drop) packet pbufs */
-        LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with Fragment header dropped (with LWIP_IPV6_REASS==0)\n"));
+        LWIP_DEBUGF(IP6_DEBUG,
+                    ("ip6_input: packet with Fragment header dropped (with LWIP_IPV6_REASS==0)\n"));
         pbuf_free(p);
         IP6_STATS_INC(ip6.opterr);
         IP6_STATS_INC(ip6.drop);
@@ -1036,7 +1037,8 @@ netif_found:
     if (*nexth == IP6_NEXTH_HOPBYHOP) {
       /* Hop-by-Hop header comes only as a first option */
       icmp6_param_problem(p, ICMP6_PP_HEADER, nexth);
-      LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with Hop-by-Hop options header dropped (only valid as a first option)\n"));
+      LWIP_DEBUGF(IP6_DEBUG, ("ip6_input: packet with Hop-by-Hop options header dropped (only "
+                              "valid as a first option)\n"));
       pbuf_free(p);
       IP6_STATS_INC(ip6.drop);
       goto ip6_input_cleanup;
@@ -1053,11 +1055,10 @@ options_done:
   pbuf_add_header_force(p, hlen_tot);
   /* raw input did not eat the packet? */
   raw_status = raw_input(p, inp);
-  if (raw_status != RAW_INPUT_EATEN)
-  {
+  if (raw_status != RAW_INPUT_EATEN) {
     /* Point to payload. */
     pbuf_remove_header(p, hlen_tot);
-#else /* LWIP_RAW */
+#else  /* LWIP_RAW */
   {
 #endif /* LWIP_RAW */
     switch (*nexth) {
@@ -1084,11 +1085,11 @@ options_done:
 #endif /* LWIP_ICMP */
     default:
 #if LWIP_RAW
-        if (raw_status == RAW_INPUT_DELIVERED) {
-          /* @todo: ipv6 mib in-delivers? */
-        } else
+      if (raw_status == RAW_INPUT_DELIVERED) {
+        /* @todo: ipv6 mib in-delivers? */
+      } else
 #endif /* LWIP_RAW */
-        {
+      {
 #if LWIP_ICMP6
         /* p points to IPv6 header again for raw_input. */
         pbuf_add_header_force(p, hlen_tot);
@@ -1098,7 +1099,9 @@ options_done:
           icmp6_param_problem(p, ICMP6_PP_HEADER, nexth);
         }
 #endif /* LWIP_ICMP */
-        LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("ip6_input: Unsupported transport protocol %"U16_F"\n", (u16_t)IP6H_NEXTH(ip6hdr)));
+        LWIP_DEBUGF(
+            IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
+            ("ip6_input: Unsupported transport protocol %" U16_F "\n", (u16_t) IP6H_NEXTH(ip6hdr)));
         IP6_STATS_INC(ip6.proterr);
         IP6_STATS_INC(ip6.drop);
       }
@@ -1117,7 +1120,6 @@ ip6_input_cleanup:
 
   return ERR_OK;
 }
-
 
 /**
  * Sends an IPv6 packet on a network interface. This function constructs
@@ -1145,10 +1147,8 @@ ip6_input_cleanup:
  *         ERR_BUF if p doesn't have enough space for IPv6/LINK headers
  *         returns errors returned by netif->output_ip6
  */
-err_t
-ip6_output_if(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
-             u8_t hl, u8_t tc,
-             u8_t nexth, struct netif *netif)
+err_t ip6_output_if(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest, u8_t hl, u8_t tc,
+                    u8_t nexth, struct netif *netif)
 {
   const ip6_addr_t *src_used = src;
   if (dest != LWIP_IP_HDRINCL) {
@@ -1156,7 +1156,8 @@ ip6_output_if(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
       src_used = ip_2_ip6(ip6_select_source_address(netif, dest));
       if ((src_used == NULL) || ip6_addr_isany(src_used)) {
         /* No appropriate source address was found for this packet. */
-        LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("ip6_output: No suitable source address for packet.\n"));
+        LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
+                    ("ip6_output: No suitable source address for packet.\n"));
         IP6_STATS_INC(ip6.rterr);
         return ERR_RTE;
       }
@@ -1169,10 +1170,8 @@ ip6_output_if(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
  * Same as ip6_output_if() but 'src' address is not replaced by netif address
  * when it is 'any'.
  */
-err_t
-ip6_output_if_src(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
-             u8_t hl, u8_t tc,
-             u8_t nexth, struct netif *netif)
+err_t ip6_output_if_src(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest, u8_t hl,
+                        u8_t tc, u8_t nexth, struct netif *netif)
 {
   struct ip6_hdr *ip6hdr;
   ip6_addr_t dest_addr;
@@ -1198,14 +1197,15 @@ ip6_output_if_src(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
 
     /* generate IPv6 header */
     if (pbuf_add_header(p, IP6_HLEN)) {
-      LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS, ("ip6_output: not enough room for IPv6 header in pbuf\n"));
+      LWIP_DEBUGF(IP6_DEBUG | LWIP_DBG_LEVEL_SERIOUS,
+                  ("ip6_output: not enough room for IPv6 header in pbuf\n"));
       IP6_STATS_INC(ip6.err);
       return ERR_BUF;
     }
 
-    ip6hdr = (struct ip6_hdr *)p->payload;
+    ip6hdr = (struct ip6_hdr *) p->payload;
     LWIP_ASSERT("check that first pbuf can hold struct ip6_hdr",
-               (p->len >= sizeof(struct ip6_hdr)));
+                (p->len >= sizeof(struct ip6_hdr)));
 
     IP6H_HOPLIM_SET(ip6hdr, hl);
     IP6H_NEXTH_SET(ip6hdr, nexth);
@@ -1214,7 +1214,7 @@ ip6_output_if_src(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
     ip6_addr_copy_to_packed(ip6hdr->dest, *dest);
 
     IP6H_VTCFL_SET(ip6hdr, 6, tc, 0);
-    IP6H_PLEN_SET(ip6hdr, (u16_t)(p->tot_len - IP6_HLEN));
+    IP6H_PLEN_SET(ip6hdr, (u16_t) (p->tot_len - IP6_HLEN));
 
     if (src == NULL) {
       src = IP6_ADDR_ANY6;
@@ -1224,7 +1224,7 @@ ip6_output_if_src(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
 
   } else {
     /* IP header already included in p */
-    ip6hdr = (struct ip6_hdr *)p->payload;
+    ip6hdr = (struct ip6_hdr *) p->payload;
     ip6_addr_copy_from_packed(dest_addr, ip6hdr->dest);
     ip6_addr_assign_zone(&dest_addr, IP6_UNKNOWN, netif);
     dest = &dest_addr;
@@ -1232,7 +1232,8 @@ ip6_output_if_src(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
 
   IP6_STATS_INC(ip6.xmit);
 
-  LWIP_DEBUGF(IP6_DEBUG, ("ip6_output_if: %c%c%"U16_F"\n", netif->name[0], netif->name[1], (u16_t)netif->num));
+  LWIP_DEBUGF(IP6_DEBUG, ("ip6_output_if: %c%c%" U16_F "\n", netif->name[0], netif->name[1],
+                          (u16_t) netif->num));
   ip6_debug_print(p);
 
 #if ENABLE_LOOPBACK
@@ -1287,9 +1288,8 @@ ip6_output_if_src(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
  * @return ERR_RTE if no route is found
  *         see ip_output_if() for more return values
  */
-err_t
-ip6_output(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
-          u8_t hl, u8_t tc, u8_t nexth)
+err_t ip6_output(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest, u8_t hl, u8_t tc,
+                 u8_t nexth)
 {
   struct netif *netif;
   struct ip6_hdr *ip6hdr;
@@ -1301,7 +1301,7 @@ ip6_output(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
     netif = ip6_route(src, dest);
   } else {
     /* IP header included in p, read addresses. */
-    ip6hdr = (struct ip6_hdr *)p->payload;
+    ip6hdr = (struct ip6_hdr *) p->payload;
     ip6_addr_copy_from_packed(src_addr, ip6hdr->src);
     ip6_addr_copy_from_packed(dest_addr, ip6hdr->dest);
     netif = ip6_route(&src_addr, &dest_addr);
@@ -1309,22 +1309,17 @@ ip6_output(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
   }
 
   if (netif == NULL) {
-    LWIP_DEBUGF(IP6_DEBUG, ("ip6_output: no route for %"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F"\n",
-        IP6_ADDR_BLOCK1(dest),
-        IP6_ADDR_BLOCK2(dest),
-        IP6_ADDR_BLOCK3(dest),
-        IP6_ADDR_BLOCK4(dest),
-        IP6_ADDR_BLOCK5(dest),
-        IP6_ADDR_BLOCK6(dest),
-        IP6_ADDR_BLOCK7(dest),
-        IP6_ADDR_BLOCK8(dest)));
+    LWIP_DEBUGF(IP6_DEBUG, ("ip6_output: no route for %" X16_F ":%" X16_F ":%" X16_F ":%" X16_F
+                            ":%" X16_F ":%" X16_F ":%" X16_F ":%" X16_F "\n",
+                            IP6_ADDR_BLOCK1(dest), IP6_ADDR_BLOCK2(dest), IP6_ADDR_BLOCK3(dest),
+                            IP6_ADDR_BLOCK4(dest), IP6_ADDR_BLOCK5(dest), IP6_ADDR_BLOCK6(dest),
+                            IP6_ADDR_BLOCK7(dest), IP6_ADDR_BLOCK8(dest)));
     IP6_STATS_INC(ip6.rterr);
     return ERR_RTE;
   }
 
   return ip6_output_if(p, src, dest, hl, tc, nexth, netif);
 }
-
 
 #if LWIP_NETIF_USE_HINTS
 /** Like ip6_output, but takes and addr_hint pointer that is passed on to netif->addr_hint
@@ -1346,9 +1341,8 @@ ip6_output(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
  * @return ERR_RTE if no route is found
  *         see ip_output_if() for more return values
  */
-err_t
-ip6_output_hinted(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
-          u8_t hl, u8_t tc, u8_t nexth, struct netif_hint *netif_hint)
+err_t ip6_output_hinted(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest, u8_t hl,
+                        u8_t tc, u8_t nexth, struct netif_hint *netif_hint)
 {
   struct netif *netif;
   struct ip6_hdr *ip6hdr;
@@ -1361,7 +1355,7 @@ ip6_output_hinted(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
     netif = ip6_route(src, dest);
   } else {
     /* IP header included in p, read addresses. */
-    ip6hdr = (struct ip6_hdr *)p->payload;
+    ip6hdr = (struct ip6_hdr *) p->payload;
     ip6_addr_copy_from_packed(src_addr, ip6hdr->src);
     ip6_addr_copy_from_packed(dest_addr, ip6hdr->dest);
     netif = ip6_route(&src_addr, &dest_addr);
@@ -1369,15 +1363,11 @@ ip6_output_hinted(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
   }
 
   if (netif == NULL) {
-    LWIP_DEBUGF(IP6_DEBUG, ("ip6_output: no route for %"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F":%"X16_F"\n",
-        IP6_ADDR_BLOCK1(dest),
-        IP6_ADDR_BLOCK2(dest),
-        IP6_ADDR_BLOCK3(dest),
-        IP6_ADDR_BLOCK4(dest),
-        IP6_ADDR_BLOCK5(dest),
-        IP6_ADDR_BLOCK6(dest),
-        IP6_ADDR_BLOCK7(dest),
-        IP6_ADDR_BLOCK8(dest)));
+    LWIP_DEBUGF(IP6_DEBUG, ("ip6_output: no route for %" X16_F ":%" X16_F ":%" X16_F ":%" X16_F
+                            ":%" X16_F ":%" X16_F ":%" X16_F ":%" X16_F "\n",
+                            IP6_ADDR_BLOCK1(dest), IP6_ADDR_BLOCK2(dest), IP6_ADDR_BLOCK3(dest),
+                            IP6_ADDR_BLOCK4(dest), IP6_ADDR_BLOCK5(dest), IP6_ADDR_BLOCK6(dest),
+                            IP6_ADDR_BLOCK7(dest), IP6_ADDR_BLOCK8(dest)));
     IP6_STATS_INC(ip6.rterr);
     return ERR_RTE;
   }
@@ -1401,8 +1391,7 @@ ip6_output_hinted(struct pbuf *p, const ip6_addr_t *src, const ip6_addr_t *dest,
  * @param value the value of the router alert option data (e.g. IP6_ROUTER_ALERT_VALUE_MLD)
  * @return ERR_OK if hop-by-hop header was added, ERR_* otherwise
  */
-err_t
-ip6_options_add_hbh_ra(struct pbuf *p, u8_t nexth, u8_t value)
+err_t ip6_options_add_hbh_ra(struct pbuf *p, u8_t nexth, u8_t value)
 {
   u8_t *opt_data;
   u32_t offset = 0;
@@ -1419,25 +1408,25 @@ ip6_options_add_hbh_ra(struct pbuf *p, u8_t nexth, u8_t value)
   }
 
   /* Set fields of Hop-by-Hop header */
-  hbh_hdr = (struct ip6_hbh_hdr *)p->payload;
+  hbh_hdr = (struct ip6_hbh_hdr *) p->payload;
   IP6_HBH_NEXTH(hbh_hdr) = nexth;
   hbh_hdr->_hlen = 0;
   offset = IP6_HBH_HLEN;
 
   /* Set router alert options to Hop-by-Hop extended option header */
-  opt_hdr = (struct ip6_opt_hdr *)((u8_t *)hbh_hdr + offset);
+  opt_hdr = (struct ip6_opt_hdr *) ((u8_t *) hbh_hdr + offset);
   IP6_OPT_TYPE(opt_hdr) = IP6_ROUTER_ALERT_OPTION;
   IP6_OPT_DLEN(opt_hdr) = IP6_ROUTER_ALERT_DLEN;
   offset += IP6_OPT_HLEN;
 
   /* Set router alert option data */
-  opt_data = (u8_t *)hbh_hdr + offset;
+  opt_data = (u8_t *) hbh_hdr + offset;
   opt_data[0] = value;
   opt_data[1] = 0;
   offset += IP6_OPT_DLEN(opt_hdr);
 
   /* add 2 bytes padding to make 8 bytes Hop-by-Hop header length */
-  opt_hdr = (struct ip6_opt_hdr *)((u8_t *)hbh_hdr + offset);
+  opt_hdr = (struct ip6_opt_hdr *) ((u8_t *) hbh_hdr + offset);
   IP6_OPT_TYPE(opt_hdr) = IP6_PADN_OPTION;
   IP6_OPT_DLEN(opt_hdr) = 0;
 
@@ -1449,44 +1438,33 @@ ip6_options_add_hbh_ra(struct pbuf *p, u8_t nexth, u8_t value)
 /* Print an IPv6 header by using LWIP_DEBUGF
  * @param p an IPv6 packet, p->payload pointing to the IPv6 header
  */
-void
-ip6_debug_print(struct pbuf *p)
+void ip6_debug_print(struct pbuf *p)
 {
-  struct ip6_hdr *ip6hdr = (struct ip6_hdr *)p->payload;
+  struct ip6_hdr *ip6hdr = (struct ip6_hdr *) p->payload;
 
   LWIP_DEBUGF(IP6_DEBUG, ("IPv6 header:\n"));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("| %2"U16_F" |  %3"U16_F"  |      %7"U32_F"     | (ver, class, flow)\n",
-                    IP6H_V(ip6hdr),
-                    IP6H_TC(ip6hdr),
-                    IP6H_FL(ip6hdr)));
+  LWIP_DEBUGF(IP6_DEBUG,
+              ("| %2" U16_F " |  %3" U16_F "  |      %7" U32_F "     | (ver, class, flow)\n",
+               IP6H_V(ip6hdr), IP6H_TC(ip6hdr), IP6H_FL(ip6hdr)));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("|     %5"U16_F"     |  %3"U16_F"  |  %3"U16_F"  | (plen, nexth, hopl)\n",
-                    IP6H_PLEN(ip6hdr),
-                    IP6H_NEXTH(ip6hdr),
-                    IP6H_HOPLIM(ip6hdr)));
+  LWIP_DEBUGF(IP6_DEBUG,
+              ("|     %5" U16_F "     |  %3" U16_F "  |  %3" U16_F "  | (plen, nexth, hopl)\n",
+               IP6H_PLEN(ip6hdr), IP6H_NEXTH(ip6hdr), IP6H_HOPLIM(ip6hdr)));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" | (src)\n",
-                    IP6_ADDR_BLOCK1(&(ip6hdr->src)),
-                    IP6_ADDR_BLOCK2(&(ip6hdr->src)),
-                    IP6_ADDR_BLOCK3(&(ip6hdr->src)),
-                    IP6_ADDR_BLOCK4(&(ip6hdr->src))));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |\n",
-                    IP6_ADDR_BLOCK5(&(ip6hdr->src)),
-                    IP6_ADDR_BLOCK6(&(ip6hdr->src)),
-                    IP6_ADDR_BLOCK7(&(ip6hdr->src)),
-                    IP6_ADDR_BLOCK8(&(ip6hdr->src))));
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4" X32_F " |  %4" X32_F " |  %4" X32_F " |  %4" X32_F " | (src)\n",
+                          IP6_ADDR_BLOCK1(&(ip6hdr->src)), IP6_ADDR_BLOCK2(&(ip6hdr->src)),
+                          IP6_ADDR_BLOCK3(&(ip6hdr->src)), IP6_ADDR_BLOCK4(&(ip6hdr->src))));
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4" X32_F " |  %4" X32_F " |  %4" X32_F " |  %4" X32_F " |\n",
+                          IP6_ADDR_BLOCK5(&(ip6hdr->src)), IP6_ADDR_BLOCK6(&(ip6hdr->src)),
+                          IP6_ADDR_BLOCK7(&(ip6hdr->src)), IP6_ADDR_BLOCK8(&(ip6hdr->src))));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" | (dest)\n",
-                    IP6_ADDR_BLOCK1(&(ip6hdr->dest)),
-                    IP6_ADDR_BLOCK2(&(ip6hdr->dest)),
-                    IP6_ADDR_BLOCK3(&(ip6hdr->dest)),
-                    IP6_ADDR_BLOCK4(&(ip6hdr->dest))));
-  LWIP_DEBUGF(IP6_DEBUG, ("|  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |  %4"X32_F" |\n",
-                    IP6_ADDR_BLOCK5(&(ip6hdr->dest)),
-                    IP6_ADDR_BLOCK6(&(ip6hdr->dest)),
-                    IP6_ADDR_BLOCK7(&(ip6hdr->dest)),
-                    IP6_ADDR_BLOCK8(&(ip6hdr->dest))));
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4" X32_F " |  %4" X32_F " |  %4" X32_F " |  %4" X32_F " | (dest)\n",
+                          IP6_ADDR_BLOCK1(&(ip6hdr->dest)), IP6_ADDR_BLOCK2(&(ip6hdr->dest)),
+                          IP6_ADDR_BLOCK3(&(ip6hdr->dest)), IP6_ADDR_BLOCK4(&(ip6hdr->dest))));
+  LWIP_DEBUGF(IP6_DEBUG, ("|  %4" X32_F " |  %4" X32_F " |  %4" X32_F " |  %4" X32_F " |\n",
+                          IP6_ADDR_BLOCK5(&(ip6hdr->dest)), IP6_ADDR_BLOCK6(&(ip6hdr->dest)),
+                          IP6_ADDR_BLOCK7(&(ip6hdr->dest)), IP6_ADDR_BLOCK8(&(ip6hdr->dest))));
   LWIP_DEBUGF(IP6_DEBUG, ("+-------------------------------+\n"));
 }
 #endif /* IP6_DEBUG */

@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file         stm32h5xx_hal_msp.c
-  * @brief        This file provides code for the MSP Initialization
-  *               and de-Initialization codes.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file         stm32h5xx_hal_msp.c
+ * @brief        This file provides code for the MSP Initialization
+ *               and de-Initialization codes.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2025 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -58,11 +58,10 @@
 
 /* USER CODE END 0 */
 /**
-  * Initializes the Global MSP.
-  */
+ * Initializes the Global MSP.
+ */
 void HAL_MspInit(void)
 {
-
   /* USER CODE BEGIN MspInit 0 */
 
   /* USER CODE END MspInit 0 */
@@ -75,15 +74,14 @@ void HAL_MspInit(void)
 }
 
 /**
-  * @brief DCACHE MSP Initialization
-  * This function configures the hardware resources used in this example
-  * @param hdcache: DCACHE handle pointer
-  * @retval None
-  */
-void HAL_DCACHE_MspInit(DCACHE_HandleTypeDef* hdcache)
+ * @brief DCACHE MSP Initialization
+ * This function configures the hardware resources used in this example
+ * @param hdcache: DCACHE handle pointer
+ * @retval None
+ */
+void HAL_DCACHE_MspInit(DCACHE_HandleTypeDef *hdcache)
 {
-  if(hdcache->Instance==DCACHE1)
-  {
+  if (hdcache->Instance == DCACHE1) {
     /* USER CODE BEGIN DCACHE1_MspInit 0 */
 
     /* USER CODE END DCACHE1_MspInit 0 */
@@ -92,21 +90,18 @@ void HAL_DCACHE_MspInit(DCACHE_HandleTypeDef* hdcache)
     /* USER CODE BEGIN DCACHE1_MspInit 1 */
 
     /* USER CODE END DCACHE1_MspInit 1 */
-
   }
-
 }
 
 /**
-  * @brief DCACHE MSP De-Initialization
-  * This function freeze the hardware resources used in this example
-  * @param hdcache: DCACHE handle pointer
-  * @retval None
-  */
-void HAL_DCACHE_MspDeInit(DCACHE_HandleTypeDef* hdcache)
+ * @brief DCACHE MSP De-Initialization
+ * This function freeze the hardware resources used in this example
+ * @param hdcache: DCACHE handle pointer
+ * @retval None
+ */
+void HAL_DCACHE_MspDeInit(DCACHE_HandleTypeDef *hdcache)
 {
-  if(hdcache->Instance==DCACHE1)
-  {
+  if (hdcache->Instance == DCACHE1) {
     /* USER CODE BEGIN DCACHE1_MspDeInit 0 */
 
     /* USER CODE END DCACHE1_MspDeInit 0 */
@@ -116,7 +111,6 @@ void HAL_DCACHE_MspDeInit(DCACHE_HandleTypeDef* hdcache)
 
     /* USER CODE END DCACHE1_MspDeInit 1 */
   }
-
 }
 
 // /**
@@ -197,15 +191,14 @@ void HAL_DCACHE_MspDeInit(DCACHE_HandleTypeDef* hdcache)
 // }
 
 /**
-  * @brief ETH MSP De-Initialization
-  * This function freeze the hardware resources used in this example
-  * @param heth: ETH handle pointer
-  * @retval None
-  */
-void HAL_ETH_MspDeInit(ETH_HandleTypeDef* heth)
+ * @brief ETH MSP De-Initialization
+ * This function freeze the hardware resources used in this example
+ * @param heth: ETH handle pointer
+ * @retval None
+ */
+void HAL_ETH_MspDeInit(ETH_HandleTypeDef *heth)
 {
-  if(heth->Instance==ETH)
-  {
+  if (heth->Instance == ETH) {
     /* USER CODE BEGIN ETH_MspDeInit 0 */
 
     /* USER CODE END ETH_MspDeInit 0 */
@@ -225,30 +218,28 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* heth)
     PB12     ------> ETH_TXD0
     PB15     ------> ETH_TXD1
     */
-    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_1|GPIO_PIN_4|GPIO_PIN_5);
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5);
 
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_5|GPIO_PIN_7);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_5 | GPIO_PIN_7);
 
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_12|GPIO_PIN_15);
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_12 | GPIO_PIN_15);
 
     /* USER CODE BEGIN ETH_MspDeInit 1 */
 
     /* USER CODE END ETH_MspDeInit 1 */
   }
-
 }
 
 /**
-  * @brief FDCAN MSP Initialization
-  * This function configures the hardware resources used in this example
-  * @param hfdcan: FDCAN handle pointer
-  * @retval None
-  */
-void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
+ * @brief FDCAN MSP Initialization
+ * This function configures the hardware resources used in this example
+ * @param hfdcan: FDCAN handle pointer
+ * @retval None
+ */
+void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef *hfdcan)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(hfdcan->Instance==FDCAN1)
-  {
+  if (hfdcan->Instance == FDCAN1) {
     /* USER CODE BEGIN FDCAN1_MspInit 0 */
 
     /* USER CODE END FDCAN1_MspInit 0 */
@@ -260,7 +251,7 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     PB7     ------> FDCAN1_TX
     PB8     ------> FDCAN1_RX
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_8;
+    GPIO_InitStruct.Pin = GPIO_PIN_7 | GPIO_PIN_8;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -270,21 +261,18 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     /* USER CODE BEGIN FDCAN1_MspInit 1 */
 
     /* USER CODE END FDCAN1_MspInit 1 */
-
   }
-
 }
 
 /**
-  * @brief FDCAN MSP De-Initialization
-  * This function freeze the hardware resources used in this example
-  * @param hfdcan: FDCAN handle pointer
-  * @retval None
-  */
-void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
+ * @brief FDCAN MSP De-Initialization
+ * This function freeze the hardware resources used in this example
+ * @param hfdcan: FDCAN handle pointer
+ * @retval None
+ */
+void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef *hfdcan)
 {
-  if(hfdcan->Instance==FDCAN1)
-  {
+  if (hfdcan->Instance == FDCAN1) {
     /* USER CODE BEGIN FDCAN1_MspDeInit 0 */
 
     /* USER CODE END FDCAN1_MspDeInit 0 */
@@ -295,25 +283,23 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     PB7     ------> FDCAN1_TX
     PB8     ------> FDCAN1_RX
     */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_7|GPIO_PIN_8);
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_7 | GPIO_PIN_8);
 
     /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
 
     /* USER CODE END FDCAN1_MspDeInit 1 */
   }
-
 }
 
 /**
-  * @brief FMAC MSP Initialization
-  * This function configures the hardware resources used in this example
-  * @param hfmac: FMAC handle pointer
-  * @retval None
-  */
-void HAL_FMAC_MspInit(FMAC_HandleTypeDef* hfmac)
+ * @brief FMAC MSP Initialization
+ * This function configures the hardware resources used in this example
+ * @param hfmac: FMAC handle pointer
+ * @retval None
+ */
+void HAL_FMAC_MspInit(FMAC_HandleTypeDef *hfmac)
 {
-  if(hfmac->Instance==FMAC)
-  {
+  if (hfmac->Instance == FMAC) {
     /* USER CODE BEGIN FMAC_MspInit 0 */
 
     /* USER CODE END FMAC_MspInit 0 */
@@ -322,21 +308,18 @@ void HAL_FMAC_MspInit(FMAC_HandleTypeDef* hfmac)
     /* USER CODE BEGIN FMAC_MspInit 1 */
 
     /* USER CODE END FMAC_MspInit 1 */
-
   }
-
 }
 
 /**
-  * @brief FMAC MSP De-Initialization
-  * This function freeze the hardware resources used in this example
-  * @param hfmac: FMAC handle pointer
-  * @retval None
-  */
-void HAL_FMAC_MspDeInit(FMAC_HandleTypeDef* hfmac)
+ * @brief FMAC MSP De-Initialization
+ * This function freeze the hardware resources used in this example
+ * @param hfmac: FMAC handle pointer
+ * @retval None
+ */
+void HAL_FMAC_MspDeInit(FMAC_HandleTypeDef *hfmac)
 {
-  if(hfmac->Instance==FMAC)
-  {
+  if (hfmac->Instance == FMAC) {
     /* USER CODE BEGIN FMAC_MspDeInit 0 */
 
     /* USER CODE END FMAC_MspDeInit 0 */
@@ -346,20 +329,18 @@ void HAL_FMAC_MspDeInit(FMAC_HandleTypeDef* hfmac)
 
     /* USER CODE END FMAC_MspDeInit 1 */
   }
-
 }
 
 /**
-  * @brief SPI MSP Initialization
-  * This function configures the hardware resources used in this example
-  * @param hspi: SPI handle pointer
-  * @retval None
-  */
-void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
+ * @brief SPI MSP Initialization
+ * This function configures the hardware resources used in this example
+ * @param hspi: SPI handle pointer
+ * @retval None
+ */
+void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(hspi->Instance==SPI1)
-  {
+  if (hspi->Instance == SPI1) {
     /* USER CODE BEGIN SPI1_MspInit 0 */
 
     /* USER CODE END SPI1_MspInit 0 */
@@ -372,7 +353,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     PB4(NJTRST)     ------> SPI1_MISO
     PB5     ------> SPI1_MOSI
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5;
+    GPIO_InitStruct.Pin = GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -382,21 +363,18 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     /* USER CODE BEGIN SPI1_MspInit 1 */
 
     /* USER CODE END SPI1_MspInit 1 */
-
   }
-
 }
 
 /**
-  * @brief SPI MSP De-Initialization
-  * This function freeze the hardware resources used in this example
-  * @param hspi: SPI handle pointer
-  * @retval None
-  */
-void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
+ * @brief SPI MSP De-Initialization
+ * This function freeze the hardware resources used in this example
+ * @param hspi: SPI handle pointer
+ * @retval None
+ */
+void HAL_SPI_MspDeInit(SPI_HandleTypeDef *hspi)
 {
-  if(hspi->Instance==SPI1)
-  {
+  if (hspi->Instance == SPI1) {
     /* USER CODE BEGIN SPI1_MspDeInit 0 */
 
     /* USER CODE END SPI1_MspDeInit 0 */
@@ -408,32 +386,30 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
     PB4(NJTRST)     ------> SPI1_MISO
     PB5     ------> SPI1_MOSI
     */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5);
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5);
 
     /* USER CODE BEGIN SPI1_MspDeInit 1 */
 
     /* USER CODE END SPI1_MspDeInit 1 */
   }
-
 }
 
 /**
-  * @brief PCD MSP Initialization
-  * This function configures the hardware resources used in this example
-  * @param hpcd: PCD handle pointer
-  * @retval None
-  */
-void HAL_PCD_MspInit(PCD_HandleTypeDef* hpcd)
+ * @brief PCD MSP Initialization
+ * This function configures the hardware resources used in this example
+ * @param hpcd: PCD handle pointer
+ * @retval None
+ */
+void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
 {
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-  if(hpcd->Instance==USB_DRD_FS)
-  {
+  if (hpcd->Instance == USB_DRD_FS) {
     /* USER CODE BEGIN USB_DRD_FS_MspInit 0 */
 
     /* USER CODE END USB_DRD_FS_MspInit 0 */
 
-  /** Initializes the peripherals clock
-  */
+    /** Initializes the peripherals clock
+     */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USB;
     PeriphClkInitStruct.PLL3.PLL3Source = RCC_PLL3_SOURCE_HSE;
     PeriphClkInitStruct.PLL3.PLL3M = 5;
@@ -446,8 +422,7 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* hpcd)
     PeriphClkInitStruct.PLL3.PLL3FRACN = 0;
     PeriphClkInitStruct.PLL3.PLL3ClockOut = RCC_PLL3_DIVQ;
     PeriphClkInitStruct.UsbClockSelection = RCC_USBCLKSOURCE_PLL3Q;
-    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
-    {
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK) {
       Error_Handler();
     }
 
@@ -458,21 +433,18 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* hpcd)
     /* USER CODE BEGIN USB_DRD_FS_MspInit 1 */
 
     /* USER CODE END USB_DRD_FS_MspInit 1 */
-
   }
-
 }
 
 /**
-  * @brief PCD MSP De-Initialization
-  * This function freeze the hardware resources used in this example
-  * @param hpcd: PCD handle pointer
-  * @retval None
-  */
-void HAL_PCD_MspDeInit(PCD_HandleTypeDef* hpcd)
+ * @brief PCD MSP De-Initialization
+ * This function freeze the hardware resources used in this example
+ * @param hpcd: PCD handle pointer
+ * @retval None
+ */
+void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd)
 {
-  if(hpcd->Instance==USB_DRD_FS)
-  {
+  if (hpcd->Instance == USB_DRD_FS) {
     /* USER CODE BEGIN USB_DRD_FS_MspDeInit 0 */
 
     /* USER CODE END USB_DRD_FS_MspDeInit 0 */
@@ -482,7 +454,6 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* hpcd)
 
     /* USER CODE END USB_DRD_FS_MspDeInit 1 */
   }
-
 }
 
 /* USER CODE BEGIN 1 */

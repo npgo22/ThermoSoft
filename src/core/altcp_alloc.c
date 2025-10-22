@@ -48,8 +48,8 @@
 #include "lwip/altcp.h"
 #include "lwip/altcp_tcp.h"
 #include "lwip/altcp_tls.h"
-#include "lwip/priv/altcp_priv.h"
 #include "lwip/mem.h"
+#include "lwip/priv/altcp_priv.h"
 
 #include <string.h>
 
@@ -57,8 +57,7 @@
 
 /** This standard allocator function creates an altcp pcb for
  * TLS over TCP */
-struct altcp_pcb *
-altcp_tls_new(struct altcp_tls_config *config, u8_t ip_type)
+struct altcp_pcb *altcp_tls_new(struct altcp_tls_config *config, u8_t ip_type)
 {
   struct altcp_pcb *inner_conn, *ret;
   LWIP_UNUSED_ARG(ip_type);
@@ -76,10 +75,9 @@ altcp_tls_new(struct altcp_tls_config *config, u8_t ip_type)
 
 /** This standard allocator function creates an altcp pcb for
  * TLS over TCP */
-struct altcp_pcb *
-altcp_tls_alloc(void *arg, u8_t ip_type)
+struct altcp_pcb *altcp_tls_alloc(void *arg, u8_t ip_type)
 {
-  return altcp_tls_new((struct altcp_tls_config *)arg, ip_type);
+  return altcp_tls_new((struct altcp_tls_config *) arg, ip_type);
 }
 
 #endif /* LWIP_ALTCP_TLS */

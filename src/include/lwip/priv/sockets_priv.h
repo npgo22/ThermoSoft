@@ -92,7 +92,12 @@ struct lwip_sock {
 };
 
 #ifndef set_errno
-#define set_errno(err) do { if (err) { errno = (err); } } while(0)
+#define set_errno(err)                                                                             \
+  do {                                                                                             \
+    if (err) {                                                                                     \
+      errno = (err);                                                                               \
+    }                                                                                              \
+  } while (0)
 #endif
 
 #if !LWIP_TCPIP_CORE_LOCKING
@@ -109,7 +114,7 @@ struct lwip_setgetsockopt_data {
   /** name of the option to process */
   int optname;
   /** set: value to set the option to
-    * get: value of the option is stored here */
+   * get: value of the option is stored here */
 #if LWIP_MPU_COMPATIBLE
   u8_t optval[LWIP_SETGETSOCKOPT_MAXOPTLEN];
 #else
@@ -123,7 +128,7 @@ struct lwip_setgetsockopt_data {
   /** if an error occurs, it is temporarily stored here */
   int err;
   /** semaphore to wake up the calling task */
-  void* completed_sem;
+  void *completed_sem;
 };
 #endif /* !LWIP_TCPIP_CORE_LOCKING */
 
@@ -131,12 +136,12 @@ struct lwip_setgetsockopt_data {
 }
 #endif
 
-struct lwip_sock* lwip_socket_dbg_get_socket(int fd);
+struct lwip_sock *lwip_socket_dbg_get_socket(int fd);
 
 #if LWIP_SOCKET_SELECT || LWIP_SOCKET_POLL
 
 #if LWIP_NETCONN_SEM_PER_THREAD
-#define SELECT_SEM_T        sys_sem_t*
+#define SELECT_SEM_T        sys_sem_t *
 #define SELECT_SEM_PTR(sem) (sem)
 #else /* LWIP_NETCONN_SEM_PER_THREAD */
 #define SELECT_SEM_T        sys_sem_t

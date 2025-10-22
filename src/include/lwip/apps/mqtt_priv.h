@@ -37,16 +37,15 @@
 #ifndef LWIP_HDR_APPS_MQTT_PRIV_H
 #define LWIP_HDR_APPS_MQTT_PRIV_H
 
-#include "lwip/apps/mqtt.h"
 #include "lwip/altcp.h"
+#include "lwip/apps/mqtt.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /** Pending request item, binds application callback to pending server requests */
-struct mqtt_request_t
-{
+struct mqtt_request_t {
   /** Next item in list, NULL means this is the last in chain,
       next pointing at itself means request is unallocated */
   struct mqtt_request_t *next;
@@ -67,8 +66,7 @@ struct mqtt_ringbuf_t {
 };
 
 /** MQTT client */
-struct mqtt_client_s
-{
+struct mqtt_client_s {
   /** Timers and timeouts */
   u16_t cyclic_tick;
   u16_t keep_alive;

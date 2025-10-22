@@ -47,7 +47,7 @@ extern "C" {
 #define MLD6_HBH_HLEN 8
 /** Multicast listener report/query/done message header. */
 #ifdef PACK_STRUCT_USE_INCLUDES
-#  include "arch/bpstruct.h"
+#include "arch/bpstruct.h"
 #endif
 PACK_STRUCT_BEGIN
 struct mld_header {
@@ -61,7 +61,7 @@ struct mld_header {
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
-#  include "arch/epstruct.h"
+#include "arch/epstruct.h"
 #endif
 
 #ifdef __cplusplus

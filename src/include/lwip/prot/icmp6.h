@@ -132,7 +132,7 @@ enum icmp6_pp_code {
 
 /** This is the standard ICMP6 header. */
 #ifdef PACK_STRUCT_USE_INCLUDES
-#  include "arch/bpstruct.h"
+#include "arch/bpstruct.h"
 #endif
 PACK_STRUCT_BEGIN
 struct icmp6_hdr {
@@ -143,14 +143,14 @@ struct icmp6_hdr {
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
-#  include "arch/epstruct.h"
+#include "arch/epstruct.h"
 #endif
 
 #define ICMP6_HLEN 8
 
 /** This is the ICMP6 header adapted for echo req/resp. */
 #ifdef PACK_STRUCT_USE_INCLUDES
-#  include "arch/bpstruct.h"
+#include "arch/bpstruct.h"
 #endif
 PACK_STRUCT_BEGIN
 struct icmp6_echo_hdr {
@@ -162,7 +162,7 @@ struct icmp6_echo_hdr {
 } PACK_STRUCT_STRUCT;
 PACK_STRUCT_END
 #ifdef PACK_STRUCT_USE_INCLUDES
-#  include "arch/epstruct.h"
+#include "arch/epstruct.h"
 #endif
 
 #ifdef __cplusplus

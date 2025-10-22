@@ -38,12 +38,12 @@
 #ifndef LWIP_HDR_IP4_FRAG_H
 #define LWIP_HDR_IP4_FRAG_H
 
-#include "lwip/opt.h"
 #include "lwip/err.h"
-#include "lwip/pbuf.h"
-#include "lwip/netif.h"
-#include "lwip/ip_addr.h"
 #include "lwip/ip.h"
+#include "lwip/ip_addr.h"
+#include "lwip/netif.h"
+#include "lwip/opt.h"
+#include "lwip/pbuf.h"
 
 #if LWIP_IPV4
 
@@ -69,7 +69,7 @@ struct ip_reassdata {
 
 void ip_reass_init(void);
 void ip_reass_tmr(void);
-struct pbuf * ip4_reass(struct pbuf *p);
+struct pbuf *ip4_reass(struct pbuf *p);
 #endif /* IP_REASSEMBLY */
 
 #if IP_FRAG

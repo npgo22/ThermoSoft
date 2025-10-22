@@ -96,12 +96,11 @@ extern "C" {
 #define NEW_U 0x01
 
 /* reserved, special-case values of above */
-#define SPECIAL_I (NEW_S|NEW_W|NEW_U) /* echoed interactive traffic */
-#define SPECIAL_D (NEW_S|NEW_A|NEW_W|NEW_U) /* unidirectional data */
-#define SPECIALS_MASK (NEW_S|NEW_A|NEW_W|NEW_U)
+#define SPECIAL_I     (NEW_S | NEW_W | NEW_U)         /* echoed interactive traffic */
+#define SPECIAL_D     (NEW_S | NEW_A | NEW_W | NEW_U) /* unidirectional data */
+#define SPECIALS_MASK (NEW_S | NEW_A | NEW_W | NEW_U)
 
 #define TCP_PUSH_BIT 0x10
-
 
 /*
  * "state" data for each active tcp conversation on the wire.  This is
@@ -111,17 +110,16 @@ extern "C" {
  */
 struct cstate {
   struct cstate *cs_next; /* next most recently used state (xmit only) */
-  u16_t cs_hlen;        /* size of hdr (receive only) */
-  u8_t cs_id;           /* connection # associated with this state */
+  u16_t cs_hlen;          /* size of hdr (receive only) */
+  u8_t cs_id;             /* connection # associated with this state */
   u8_t cs_filler;
   union {
     char csu_hdr[MAX_HDR];
-    struct ip_hdr csu_ip;     /* ip/tcp hdr from most recent packet */
+    struct ip_hdr csu_ip; /* ip/tcp hdr from most recent packet */
   } vjcs_u;
 };
-#define cs_ip vjcs_u.csu_ip
+#define cs_ip  vjcs_u.csu_ip
 #define cs_hdr vjcs_u.csu_hdr
-
 
 struct vjstat {
   u32_t vjs_packets;        /* outbound packets */
@@ -138,12 +136,12 @@ struct vjstat {
  * all the state data for one serial line (we need one of these per line).
  */
 struct vjcompress {
-  struct cstate *last_cs;          /* most recently used tstate */
-  u8_t last_recv;                /* last rcvd conn. id */
-  u8_t last_xmit;                /* last sent conn. id */
+  struct cstate *last_cs; /* most recently used tstate */
+  u8_t last_recv;         /* last rcvd conn. id */
+  u8_t last_xmit;         /* last sent conn. id */
   u16_t flags;
   u8_t maxSlotIndex;
-  u8_t compressSlot;             /* Flag indicating OK to compress slot ID. */
+  u8_t compressSlot; /* Flag indicating OK to compress slot ID. */
 #if LINK_STATS
   struct vjstat stats;
 #endif
@@ -154,11 +152,11 @@ struct vjcompress {
 /* flag values */
 #define VJF_TOSS 1U /* tossing rcvd frames because of input err */
 
-extern void  vj_compress_init    (struct vjcompress *comp);
-extern u8_t  vj_compress_tcp     (struct vjcompress *comp, struct pbuf **pb);
-extern void  vj_uncompress_err   (struct vjcompress *comp);
-extern int   vj_uncompress_uncomp(struct pbuf *nb, struct vjcompress *comp);
-extern int   vj_uncompress_tcp   (struct pbuf **nb, struct vjcompress *comp);
+extern void vj_compress_init(struct vjcompress *comp);
+extern u8_t vj_compress_tcp(struct vjcompress *comp, struct pbuf **pb);
+extern void vj_uncompress_err(struct vjcompress *comp);
+extern int vj_uncompress_uncomp(struct pbuf *nb, struct vjcompress *comp);
+extern int vj_uncompress_tcp(struct pbuf **nb, struct vjcompress *comp);
 
 #ifdef __cplusplus
 }

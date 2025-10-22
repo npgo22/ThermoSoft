@@ -3,7 +3,7 @@
  * MDNS responder private definitions
  */
 
- /*
+/*
  * Copyright (c) 2015 Verisure Innovation AB
  * All rights reserved.
  *
@@ -49,7 +49,7 @@ extern "C" {
 #if LWIP_MDNS_RESPONDER
 
 #define MDNS_READNAME_ERROR 0xFFFF
-#define NUM_DOMAIN_OFFSETS 10
+#define NUM_DOMAIN_OFFSETS  10
 
 #define SRV_PRIORITY 0
 #define SRV_WEIGHT   0
@@ -59,17 +59,17 @@ extern "C" {
  *  - 75 minutes if not (4500 seconds)
  *  - 10 seconds if responding to a legacy query
  */
-#define MDNS_TTL_10    10
-#define MDNS_TTL_120   120
-#define MDNS_TTL_4500  4500
+#define MDNS_TTL_10   10
+#define MDNS_TTL_120  120
+#define MDNS_TTL_4500 4500
 
 /* RFC6762 section 8.1: If fifteen conflicts occur within any ten-second period,
  * then the host MUST wait at least five seconds before each successive
  * additional probe attempt.
  */
-#define MDNS_PROBE_MAX_CONFLICTS_BEFORE_RATE_LIMIT  15
-#define MDNS_PROBE_MAX_CONFLICTS_TIME_WINDOW        10000
-#define MDNS_PROBE_MAX_CONFLICTS_TIMEOUT            5000
+#define MDNS_PROBE_MAX_CONFLICTS_BEFORE_RATE_LIMIT 15
+#define MDNS_PROBE_MAX_CONFLICTS_TIME_WINDOW       10000
+#define MDNS_PROBE_MAX_CONFLICTS_TIMEOUT           5000
 
 #if LWIP_MDNS_SEARCH
 /** Description of a search request */
@@ -225,8 +225,8 @@ struct mdns_host {
   u8_t num_conflicts;
 };
 
-struct mdns_host* netif_mdns_data(struct netif *netif);
-struct udp_pcb* get_mdns_pcb(void);
+struct mdns_host *netif_mdns_data(struct netif *netif);
+struct udp_pcb *get_mdns_pcb(void);
 
 #endif /* LWIP_MDNS_RESPONDER */
 

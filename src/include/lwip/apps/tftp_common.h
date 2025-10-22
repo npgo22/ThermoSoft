@@ -43,8 +43,8 @@
 
 #include "lwip/apps/tftp_opts.h"
 #include "lwip/err.h"
-#include "lwip/pbuf.h"
 #include "lwip/ip_addr.h"
+#include "lwip/pbuf.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,12 +61,12 @@ struct tftp_context {
    * @param write Flag indicating read (0) or write (!= 0) access
    * @returns File handle supplied to other functions
    */
-  void* (*open)(const char* fname, const char* mode, u8_t write);
+  void *(*open)(const char *fname, const char *mode, u8_t write);
   /**
    * Close file handle
    * @param handle File handle returned by open()/tftp_put()/tftp_get()
    */
-  void (*close)(void* handle);
+  void (*close)(void *handle);
   /**
    * Read from file
    * @param handle File handle returned by open()/tftp_put()/tftp_get()
@@ -74,7 +74,7 @@ struct tftp_context {
    * @param bytes Number of bytes to copy to buf
    * @returns &gt;= 0: Success; &lt; 0: Error
    */
-  int (*read)(void* handle, void* buf, int bytes);
+  int (*read)(void *handle, void *buf, int bytes);
   /**
    * Write to file
    * @param handle File handle returned by open()/tftp_put()/tftp_get()
@@ -83,7 +83,7 @@ struct tftp_context {
    *             TFTP headers are stripped off.
    * @returns &gt;= 0: Success; &lt; 0: Error
    */
-  int (*write)(void* handle, struct pbuf* p);
+  int (*write)(void *handle, struct pbuf *p);
   /**
    * Error indication from client or response from server
    * @param handle File handle set by open()/tftp_get()/tftp_put()
@@ -91,14 +91,14 @@ struct tftp_context {
    * @param msg error message from client or server
    * @param size size of msg
    */
-  void (*error)(void* handle, int err, const char* msg, int size);
+  void (*error)(void *handle, int err, const char *msg, int size);
 };
 
 #define LWIP_TFTP_MODE_SERVER       0x01
 #define LWIP_TFTP_MODE_CLIENT       0x02
 #define LWIP_TFTP_MODE_CLIENTSERVER (LWIP_TFTP_MODE_SERVER | LWIP_TFTP_MODE_CLIENT)
 
-err_t tftp_init_common(u8_t mode, const struct tftp_context* ctx);
+err_t tftp_init_common(u8_t mode, const struct tftp_context *ctx);
 void tftp_cleanup(void);
 
 #ifdef __cplusplus

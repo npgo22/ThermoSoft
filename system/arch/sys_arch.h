@@ -40,21 +40,20 @@
 
 #include "cmsis_os2.h"
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
-#define SYS_MBOX_NULL (osMessageQueueId_t)0
-#define SYS_SEM_NULL  (osSemaphoreId_t)0
+#define SYS_MBOX_NULL (osMessageQueueId_t) 0
+#define SYS_SEM_NULL  (osSemaphoreId_t) 0
 
-typedef osSemaphoreId_t     sys_sem_t;
-typedef osSemaphoreId_t     sys_mutex_t;
-typedef osMessageQueueId_t  sys_mbox_t;
-typedef osThreadId_t        sys_thread_t;
+typedef osSemaphoreId_t sys_sem_t;
+typedef osSemaphoreId_t sys_mutex_t;
+typedef osMessageQueueId_t sys_mbox_t;
+typedef osThreadId_t sys_thread_t;
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
 #endif /* __SYS_ARCH_H__ */
-

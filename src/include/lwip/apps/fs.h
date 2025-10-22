@@ -50,11 +50,11 @@ struct fsdata_chksum {
 };
 #endif /* HTTPD_PRECALCULATED_CHECKSUM */
 
-#define FS_FILE_FLAGS_HEADER_INCLUDED     0x01
-#define FS_FILE_FLAGS_HEADER_PERSISTENT   0x02
-#define FS_FILE_FLAGS_HEADER_HTTPVER_1_1  0x04
-#define FS_FILE_FLAGS_SSI                 0x08
-#define FS_FILE_FLAGS_CUSTOM              0x10
+#define FS_FILE_FLAGS_HEADER_INCLUDED    0x01
+#define FS_FILE_FLAGS_HEADER_PERSISTENT  0x02
+#define FS_FILE_FLAGS_HEADER_HTTPVER_1_1 0x04
+#define FS_FILE_FLAGS_SSI                0x08
+#define FS_FILE_FLAGS_CUSTOM             0x10
 
 /** Define FS_FILE_EXTENSION_T_DEFINED if you have typedef'ed to your private
  * pointer type (defaults to 'void' so the default usage is 'void*')
@@ -90,8 +90,9 @@ err_t fs_open(struct fs_file *file, const char *name);
 void fs_close(struct fs_file *file);
 #if LWIP_HTTPD_DYNAMIC_FILE_READ
 #if LWIP_HTTPD_FS_ASYNC_READ
-int fs_read_async(struct fs_file *file, char *buffer, int count, fs_wait_cb callback_fn, void *callback_arg);
-#else /* LWIP_HTTPD_FS_ASYNC_READ */
+int fs_read_async(struct fs_file *file, char *buffer, int count, fs_wait_cb callback_fn,
+                  void *callback_arg);
+#else  /* LWIP_HTTPD_FS_ASYNC_READ */
 int fs_read(struct fs_file *file, char *buffer, int count);
 #endif /* LWIP_HTTPD_FS_ASYNC_READ */
 #endif /* LWIP_HTTPD_DYNAMIC_FILE_READ */
@@ -126,8 +127,9 @@ void fs_close_custom(struct fs_file *file);
 #if LWIP_HTTPD_FS_ASYNC_READ
 u8_t fs_canread_custom(struct fs_file *file);
 u8_t fs_wait_read_custom(struct fs_file *file, fs_wait_cb callback_fn, void *callback_arg);
-int fs_read_async_custom(struct fs_file *file, char *buffer, int count, fs_wait_cb callback_fn, void *callback_arg);
-#else /* LWIP_HTTPD_FS_ASYNC_READ */
+int fs_read_async_custom(struct fs_file *file, char *buffer, int count, fs_wait_cb callback_fn,
+                         void *callback_arg);
+#else  /* LWIP_HTTPD_FS_ASYNC_READ */
 int fs_read_custom(struct fs_file *file, char *buffer, int count);
 #endif /* LWIP_HTTPD_FS_ASYNC_READ */
 #endif /* LWIP_HTTPD_CUSTOM_FILES */

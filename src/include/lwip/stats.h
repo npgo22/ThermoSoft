@@ -53,45 +53,45 @@ extern "C" {
 #endif
 
 #if LWIP_STATS_LARGE
-#define STAT_COUNTER     u32_t
-#define STAT_COUNTER_F   U32_F
+#define STAT_COUNTER   u32_t
+#define STAT_COUNTER_F U32_F
 #else
-#define STAT_COUNTER     u16_t
-#define STAT_COUNTER_F   U16_F
+#define STAT_COUNTER   u16_t
+#define STAT_COUNTER_F U16_F
 #endif
 
 /** Protocol related stats */
 struct stats_proto {
-  STAT_COUNTER xmit;             /* Transmitted packets. */
-  STAT_COUNTER recv;             /* Received packets. */
-  STAT_COUNTER fw;               /* Forwarded packets. */
-  STAT_COUNTER drop;             /* Dropped packets. */
-  STAT_COUNTER chkerr;           /* Checksum error. */
-  STAT_COUNTER lenerr;           /* Invalid length error. */
-  STAT_COUNTER memerr;           /* Out of memory error. */
-  STAT_COUNTER rterr;            /* Routing error. */
-  STAT_COUNTER proterr;          /* Protocol error. */
-  STAT_COUNTER opterr;           /* Error in options. */
-  STAT_COUNTER err;              /* Misc error. */
+  STAT_COUNTER xmit;    /* Transmitted packets. */
+  STAT_COUNTER recv;    /* Received packets. */
+  STAT_COUNTER fw;      /* Forwarded packets. */
+  STAT_COUNTER drop;    /* Dropped packets. */
+  STAT_COUNTER chkerr;  /* Checksum error. */
+  STAT_COUNTER lenerr;  /* Invalid length error. */
+  STAT_COUNTER memerr;  /* Out of memory error. */
+  STAT_COUNTER rterr;   /* Routing error. */
+  STAT_COUNTER proterr; /* Protocol error. */
+  STAT_COUNTER opterr;  /* Error in options. */
+  STAT_COUNTER err;     /* Misc error. */
   STAT_COUNTER cachehit;
 };
 
 /** IGMP stats */
 struct stats_igmp {
-  STAT_COUNTER xmit;             /* Transmitted packets. */
-  STAT_COUNTER recv;             /* Received packets. */
-  STAT_COUNTER drop;             /* Dropped packets. */
-  STAT_COUNTER chkerr;           /* Checksum error. */
-  STAT_COUNTER lenerr;           /* Invalid length error. */
-  STAT_COUNTER memerr;           /* Out of memory error. */
-  STAT_COUNTER proterr;          /* Protocol error. */
-  STAT_COUNTER rx_v1;            /* Received v1 frames. */
-  STAT_COUNTER rx_group;         /* Received group-specific queries. */
-  STAT_COUNTER rx_general;       /* Received general queries. */
-  STAT_COUNTER rx_report;        /* Received reports. */
-  STAT_COUNTER tx_join;          /* Sent joins. */
-  STAT_COUNTER tx_leave;         /* Sent leaves. */
-  STAT_COUNTER tx_report;        /* Sent reports. */
+  STAT_COUNTER xmit;       /* Transmitted packets. */
+  STAT_COUNTER recv;       /* Received packets. */
+  STAT_COUNTER drop;       /* Dropped packets. */
+  STAT_COUNTER chkerr;     /* Checksum error. */
+  STAT_COUNTER lenerr;     /* Invalid length error. */
+  STAT_COUNTER memerr;     /* Out of memory error. */
+  STAT_COUNTER proterr;    /* Protocol error. */
+  STAT_COUNTER rx_v1;      /* Received v1 frames. */
+  STAT_COUNTER rx_group;   /* Received group-specific queries. */
+  STAT_COUNTER rx_general; /* Received general queries. */
+  STAT_COUNTER rx_report;  /* Received reports. */
+  STAT_COUNTER tx_join;    /* Sent joins. */
+  STAT_COUNTER tx_leave;   /* Sent leaves. */
+  STAT_COUNTER tx_report;  /* Sent reports. */
 };
 
 /** Memory stats */
@@ -308,11 +308,13 @@ void stats_init(void);
 
 #define STATS_INC(x) ++lwip_stats.x
 #define STATS_DEC(x) --lwip_stats.x
-#define STATS_INC_USED(x, y, type) do { lwip_stats.x.used = (type)(lwip_stats.x.used + y); \
-                                if (lwip_stats.x.max < lwip_stats.x.used) { \
-                                    lwip_stats.x.max = lwip_stats.x.used; \
-                                } \
-                             } while(0)
+#define STATS_INC_USED(x, y, type)                                                                 \
+  do {                                                                                             \
+    lwip_stats.x.used = (type) (lwip_stats.x.used + y);                                            \
+    if (lwip_stats.x.max < lwip_stats.x.used) {                                                    \
+      lwip_stats.x.max = lwip_stats.x.used;                                                        \
+    }                                                                                              \
+  } while (0)
 #define STATS_GET(x) lwip_stats.x
 #else /* LWIP_STATS */
 #define stats_init()
@@ -322,7 +324,7 @@ void stats_init(void);
 #endif /* LWIP_STATS */
 
 #if TCP_STATS
-#define TCP_STATS_INC(x) STATS_INC(x)
+#define TCP_STATS_INC(x)    STATS_INC(x)
 #define TCP_STATS_DISPLAY() stats_display_proto(&lwip_stats.tcp, "TCP")
 #else
 #define TCP_STATS_INC(x)
@@ -330,7 +332,7 @@ void stats_init(void);
 #endif
 
 #if UDP_STATS
-#define UDP_STATS_INC(x) STATS_INC(x)
+#define UDP_STATS_INC(x)    STATS_INC(x)
 #define UDP_STATS_DISPLAY() stats_display_proto(&lwip_stats.udp, "UDP")
 #else
 #define UDP_STATS_INC(x)
@@ -338,7 +340,7 @@ void stats_init(void);
 #endif
 
 #if ICMP_STATS
-#define ICMP_STATS_INC(x) STATS_INC(x)
+#define ICMP_STATS_INC(x)    STATS_INC(x)
 #define ICMP_STATS_DISPLAY() stats_display_proto(&lwip_stats.icmp, "ICMP")
 #else
 #define ICMP_STATS_INC(x)
@@ -346,7 +348,7 @@ void stats_init(void);
 #endif
 
 #if IGMP_STATS
-#define IGMP_STATS_INC(x) STATS_INC(x)
+#define IGMP_STATS_INC(x)    STATS_INC(x)
 #define IGMP_STATS_DISPLAY() stats_display_igmp(&lwip_stats.igmp, "IGMP")
 #else
 #define IGMP_STATS_INC(x)
@@ -354,7 +356,7 @@ void stats_init(void);
 #endif
 
 #if IP_STATS
-#define IP_STATS_INC(x) STATS_INC(x)
+#define IP_STATS_INC(x)    STATS_INC(x)
 #define IP_STATS_DISPLAY() stats_display_proto(&lwip_stats.ip, "IP")
 #else
 #define IP_STATS_INC(x)
@@ -362,7 +364,7 @@ void stats_init(void);
 #endif
 
 #if IPFRAG_STATS
-#define IPFRAG_STATS_INC(x) STATS_INC(x)
+#define IPFRAG_STATS_INC(x)    STATS_INC(x)
 #define IPFRAG_STATS_DISPLAY() stats_display_proto(&lwip_stats.ip_frag, "IP_FRAG")
 #else
 #define IPFRAG_STATS_INC(x)
@@ -370,7 +372,7 @@ void stats_init(void);
 #endif
 
 #if ETHARP_STATS
-#define ETHARP_STATS_INC(x) STATS_INC(x)
+#define ETHARP_STATS_INC(x)    STATS_INC(x)
 #define ETHARP_STATS_DISPLAY() stats_display_proto(&lwip_stats.etharp, "ETHARP")
 #else
 #define ETHARP_STATS_INC(x)
@@ -378,7 +380,7 @@ void stats_init(void);
 #endif
 
 #if LINK_STATS
-#define LINK_STATS_INC(x) STATS_INC(x)
+#define LINK_STATS_INC(x)    STATS_INC(x)
 #define LINK_STATS_DISPLAY() stats_display_proto(&lwip_stats.link, "LINK")
 #else
 #define LINK_STATS_INC(x)
@@ -386,11 +388,11 @@ void stats_init(void);
 #endif
 
 #if MEM_STATS
-#define MEM_STATS_AVAIL(x, y) lwip_stats.mem.x = y
-#define MEM_STATS_INC(x) STATS_INC(mem.x)
+#define MEM_STATS_AVAIL(x, y)    lwip_stats.mem.x = y
+#define MEM_STATS_INC(x)         STATS_INC(mem.x)
 #define MEM_STATS_INC_USED(x, y) STATS_INC_USED(mem, y, mem_size_t)
-#define MEM_STATS_DEC_USED(x, y) lwip_stats.mem.x = (mem_size_t)((lwip_stats.mem.x) - (y))
-#define MEM_STATS_DISPLAY() stats_display_mem(&lwip_stats.mem, "HEAP")
+#define MEM_STATS_DEC_USED(x, y) lwip_stats.mem.x = (mem_size_t) ((lwip_stats.mem.x) - (y))
+#define MEM_STATS_DISPLAY()      stats_display_mem(&lwip_stats.mem, "HEAP")
 #else
 #define MEM_STATS_AVAIL(x, y)
 #define MEM_STATS_INC(x)
@@ -399,21 +401,21 @@ void stats_init(void);
 #define MEM_STATS_DISPLAY()
 #endif
 
- #if MEMP_STATS
-#define MEMP_STATS_DEC(x, i) STATS_DEC(memp[i]->x)
+#if MEMP_STATS
+#define MEMP_STATS_DEC(x, i)  STATS_DEC(memp[i]->x)
 #define MEMP_STATS_DISPLAY(i) stats_display_memp(lwip_stats.memp[i], i)
-#define MEMP_STATS_GET(x, i) STATS_GET(memp[i]->x)
- #else
+#define MEMP_STATS_GET(x, i)  STATS_GET(memp[i]->x)
+#else
 #define MEMP_STATS_DEC(x, i)
 #define MEMP_STATS_DISPLAY(i)
 #define MEMP_STATS_GET(x, i) 0
 #endif
 
 #if SYS_STATS
-#define SYS_STATS_INC(x) STATS_INC(sys.x)
-#define SYS_STATS_DEC(x) STATS_DEC(sys.x)
+#define SYS_STATS_INC(x)      STATS_INC(sys.x)
+#define SYS_STATS_DEC(x)      STATS_DEC(sys.x)
 #define SYS_STATS_INC_USED(x) STATS_INC_USED(sys.x, 1, STAT_COUNTER)
-#define SYS_STATS_DISPLAY() stats_display_sys(&lwip_stats.sys)
+#define SYS_STATS_DISPLAY()   stats_display_sys(&lwip_stats.sys)
 #else
 #define SYS_STATS_INC(x)
 #define SYS_STATS_DEC(x)
@@ -422,7 +424,7 @@ void stats_init(void);
 #endif
 
 #if IP6_STATS
-#define IP6_STATS_INC(x) STATS_INC(x)
+#define IP6_STATS_INC(x)    STATS_INC(x)
 #define IP6_STATS_DISPLAY() stats_display_proto(&lwip_stats.ip6, "IPv6")
 #else
 #define IP6_STATS_INC(x)
@@ -430,7 +432,7 @@ void stats_init(void);
 #endif
 
 #if ICMP6_STATS
-#define ICMP6_STATS_INC(x) STATS_INC(x)
+#define ICMP6_STATS_INC(x)    STATS_INC(x)
 #define ICMP6_STATS_DISPLAY() stats_display_proto(&lwip_stats.icmp6, "ICMPv6")
 #else
 #define ICMP6_STATS_INC(x)
@@ -438,7 +440,7 @@ void stats_init(void);
 #endif
 
 #if IP6_FRAG_STATS
-#define IP6_FRAG_STATS_INC(x) STATS_INC(x)
+#define IP6_FRAG_STATS_INC(x)    STATS_INC(x)
 #define IP6_FRAG_STATS_DISPLAY() stats_display_proto(&lwip_stats.ip6_frag, "IPv6 FRAG")
 #else
 #define IP6_FRAG_STATS_INC(x)
@@ -446,7 +448,7 @@ void stats_init(void);
 #endif
 
 #if MLD6_STATS
-#define MLD6_STATS_INC(x) STATS_INC(x)
+#define MLD6_STATS_INC(x)    STATS_INC(x)
 #define MLD6_STATS_DISPLAY() stats_display_igmp(&lwip_stats.mld6, "MLDv1")
 #else
 #define MLD6_STATS_INC(x)
@@ -454,7 +456,7 @@ void stats_init(void);
 #endif
 
 #if ND6_STATS
-#define ND6_STATS_INC(x) STATS_INC(x)
+#define ND6_STATS_INC(x)    STATS_INC(x)
 #define ND6_STATS_DISPLAY() stats_display_proto(&lwip_stats.nd6, "ND")
 #else
 #define ND6_STATS_INC(x)
