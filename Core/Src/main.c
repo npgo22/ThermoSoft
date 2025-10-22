@@ -22,18 +22,19 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-/* USER CODE BEGIN Includes */
 #include "ethernetif.h"
 #include "lwip.h"
 #include "lwip/init.h"
 #include "lwip/netif.h"
 #include "lwip/opt.h"
 #include "lwip/timeouts.h"
+#include "max31856.h"
 #include "netif/etharp.h"
+#include "lwip/udp.h"
+
 #if LWIP_DHCP
 #include "lwip/dhcp.h"
 #endif
-/* USER CODE END Includes */
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,6 +72,13 @@ PCD_HandleTypeDef hpcd_USB_DRD_FS;
 
 /* USER CODE BEGIN PV */
 extern struct netif gnetif;
+
+// MAX31856 sensor instances
+max31856_t therm1, therm2, therm3, therm4;
+struct udp_pcb *udp_tx_pcb;
+sensor_data_packet_t sensor_packet;
+uint8_t batch_index = 0;  // Current index in the batch (0 to BATCH_SIZE-1)
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,6 +97,149 @@ static void Netif_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+static void Init_MAX31856_Sensors(void)
+{
+  // Initialize Sensor 1
+  therm1.spi_handle = &hspi1;
+  therm1.cs_pin.gpio_port = CS1_Port;
+  therm1.cs_pin.gpio_pin = CS1_Pin;
+  therm1.fault_pin.gpio_port = NFAULT1_Port;
+  therm1.fault_pin.gpio_pin = NFAULT1_Pin;
+  therm1.drdy_pin.gpio_port = NDRDY1_Port;
+  therm1.drdy_pin.gpio_pin = NDRDY1_Pin;
+  max31856_init(&therm1);
+  max31856_set_noise_filter(&therm1, MAX31856_NOISE_FILTER);
+  max31856_set_cold_junction_enable(&therm1, MAX31856_CJ_ENABLE);
+  max31856_set_thermocouple_type(&therm1, MAX31856_TC_TYPE);
+  max31856_set_average_samples(&therm1, MAX31856_AVG_SAMPLES);
+  max31856_set_open_circuit_fault_detection(&therm1, MAX31856_OC_FAULT_DETECT);
+  max31856_set_conversion_mode(&therm1, MAX31856_CONVERSION_MODE);
+
+  // Initialize Sensor 2
+  therm2.spi_handle = &hspi1;
+  therm2.cs_pin.gpio_port = CS2_Port;
+  therm2.cs_pin.gpio_pin = CS2_Pin;
+  therm2.fault_pin.gpio_port = NFAULT2_Port;
+  therm2.fault_pin.gpio_pin = NFAULT2_Pin;
+  therm2.drdy_pin.gpio_port = NDRDY2_Port;
+  therm2.drdy_pin.gpio_pin = NDRDY2_Pin;
+  max31856_init(&therm2);
+  max31856_set_noise_filter(&therm2, MAX31856_NOISE_FILTER);
+  max31856_set_cold_junction_enable(&therm2, MAX31856_CJ_ENABLE);
+  max31856_set_thermocouple_type(&therm2, MAX31856_TC_TYPE);
+  max31856_set_average_samples(&therm2, MAX31856_AVG_SAMPLES);
+  max31856_set_open_circuit_fault_detection(&therm2, MAX31856_OC_FAULT_DETECT);
+  max31856_set_conversion_mode(&therm2, MAX31856_CONVERSION_MODE);
+
+  // Initialize Sensor 3
+  therm3.spi_handle = &hspi1;
+  therm3.cs_pin.gpio_port = CS3_Port;
+  therm3.cs_pin.gpio_pin = CS3_Pin;
+  therm3.fault_pin.gpio_port = NFAULT3_Port;
+  therm3.fault_pin.gpio_pin = NFAULT3_Pin;
+  therm3.drdy_pin.gpio_port = NDRDY3_Port;
+  therm3.drdy_pin.gpio_pin = NDRDY3_Pin;
+  max31856_init(&therm3);
+  max31856_set_noise_filter(&therm3, MAX31856_NOISE_FILTER);
+  max31856_set_cold_junction_enable(&therm3, MAX31856_CJ_ENABLE);
+  max31856_set_thermocouple_type(&therm3, MAX31856_TC_TYPE);
+  max31856_set_average_samples(&therm3, MAX31856_AVG_SAMPLES);
+  max31856_set_open_circuit_fault_detection(&therm3, MAX31856_OC_FAULT_DETECT);
+  max31856_set_conversion_mode(&therm3, MAX31856_CONVERSION_MODE);
+
+  // Initialize Sensor 4
+  therm4.spi_handle = &hspi1;
+  therm4.cs_pin.gpio_port = CS4_Port;
+  therm4.cs_pin.gpio_pin = CS4_Pin;
+  therm4.fault_pin.gpio_port = NFAULT4_Port;
+  therm4.fault_pin.gpio_pin = NFAULT4_Pin;
+  therm4.drdy_pin.gpio_port = NDRDY4_Port;
+  therm4.drdy_pin.gpio_pin = NDRDY4_Pin;
+  max31856_init(&therm4);
+  max31856_set_noise_filter(&therm4, MAX31856_NOISE_FILTER);
+  max31856_set_cold_junction_enable(&therm4, MAX31856_CJ_ENABLE);
+  max31856_set_thermocouple_type(&therm4, MAX31856_TC_TYPE);
+  max31856_set_average_samples(&therm4, MAX31856_AVG_SAMPLES);
+  max31856_set_open_circuit_fault_detection(&therm4, MAX31856_OC_FAULT_DETECT);
+  max31856_set_conversion_mode(&therm4, MAX31856_CONVERSION_MODE);
+}
+
+static void Init_UDP_Socket(void)
+{
+  ip_addr_t dest_addr;
+
+  // Create new UDP PCB
+  udp_tx_pcb = udp_new();
+  if (udp_tx_pcb == NULL) {
+    // Handle error
+    return;
+  }
+
+  // Bind to any local address and port
+  err_t err = udp_bind(udp_tx_pcb, IP_ADDR_ANY, 0);
+  if (err != ERR_OK) {
+    udp_remove(udp_tx_pcb);
+    return;
+  }
+
+  // Set destination address and port
+  IP4_ADDR(&dest_addr, UDP_DEST_IP_ADDR0, UDP_DEST_IP_ADDR1, UDP_DEST_IP_ADDR2, UDP_DEST_IP_ADDR3);
+  err = udp_connect(udp_tx_pcb, &dest_addr, UDP_DEST_PORT);
+  if (err != ERR_OK) {
+    udp_remove(udp_tx_pcb);
+    return;
+  }
+}
+
+static void Read_MAX31856_Sensor(max31856_t *sensor, float *temp_value)
+{
+  // Check for faults
+  max31856_read_fault(sensor);
+
+  if (sensor->sr.val != 0) {
+    // Fault detected - send 0.0
+    *temp_value = 0.0f;
+    
+    // Clear fault for next reading
+    max31856_clear_fault_status(sensor);
+    return;
+  }
+
+  // No fault - read thermocouple temperature
+  *temp_value = max31856_read_TC_temp(sensor);
+}
+
+static void Send_Sensor_Data_UDP(void)
+{
+  struct pbuf *p;
+
+  // Set packet tag and timestamp
+  sensor_packet.packetTag = PACKET_ID;
+  sensor_packet.packetTime = HAL_GetTick();
+
+  // Allocate pbuf for data
+  p = pbuf_alloc(PBUF_TRANSPORT, sizeof(sensor_data_packet_t), PBUF_RAM);
+  if (p == NULL) {
+    return;
+  }
+
+  // Copy data to pbuf
+  memcpy(p->payload, &sensor_packet, sizeof(sensor_data_packet_t));
+
+  // Send the data
+  err_t err = udp_send(udp_tx_pcb, p);
+
+  // Free the pbuf
+  pbuf_free(p);
+
+  if (err != ERR_OK) {
+    // Handle send error
+  }
+  
+  // Reset batch index for next packet
+  batch_index = 0;
+}
 
 /* USER CODE END 0 */
 
@@ -133,11 +284,33 @@ int main(void)
 
   lwip_init();
   Netif_Config();
+  // Initialize MAX31856 sensors
+  Init_MAX31856_Sensors();
+
+  ethernetif_input(&gnetif);
+  sys_check_timeouts();
+
+  // Initialize UDP socket
+  Init_UDP_Socket();
+
+  uint32_t last_send_time = HAL_GetTick();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
+//     /* Read a received packet from the Ethernet buffers and send it
+//      to the lwIP for handling */
+//     ethernetif_input(&gnetif);
+//     /* Handle timeouts */
+//     sys_check_timeouts();
+// #if LWIP_NETIF_LINK_CALLBACK
+//     Ethernet_Link_Periodic_Handle(&gnetif);
+// #endif
+// #if LWIP_DHCP
+//     DHCP_Periodic_Handle(&gnetif);
+// #endif
     /* Read a received packet from the Ethernet buffers and send it
      to the lwIP for handling */
     ethernetif_input(&gnetif);
@@ -149,7 +322,28 @@ int main(void)
 #if LWIP_DHCP
     DHCP_Periodic_Handle(&gnetif);
 #endif
-    /* USER CODE END WHILE */
+    
+    // Collect sensor readings at configured interval
+    if ((HAL_GetTick() - last_send_time) >= UDP_SEND_INTERVAL_MS) {
+        if (netif_is_up(&gnetif)) {
+            // Read all sensors and store in current batch position
+            Read_MAX31856_Sensor(&therm1, &sensor_packet.tc1_temps[batch_index]);
+            Read_MAX31856_Sensor(&therm2, &sensor_packet.tc2_temps[batch_index]);
+            Read_MAX31856_Sensor(&therm3, &sensor_packet.tc3_temps[batch_index]);
+            Read_MAX31856_Sensor(&therm4, &sensor_packet.tc4_temps[batch_index]);
+            
+            batch_index++;
+            
+            // When batch is full, send the packet
+            if (batch_index >= BATCH_SIZE) {
+                Send_Sensor_Data_UDP();
+            }
+        }
+        last_send_time = HAL_GetTick();
+    }
+        
+
+/* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
