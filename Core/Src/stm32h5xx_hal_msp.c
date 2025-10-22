@@ -119,69 +119,82 @@ void HAL_DCACHE_MspDeInit(DCACHE_HandleTypeDef* hdcache)
 
 }
 
-#if 0  // HAL_ETH_MspInit is defined in ethernetif.c
-/**
-  * @brief ETH MSP Initialization
-  * This function configures the hardware resources used in this example
-  * @param heth: ETH handle pointer
-  * @retval None
-  */
-void HAL_ETH_MspInit(ETH_HandleTypeDef* heth)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(heth->Instance==ETH)
-  {
-    /* USER CODE BEGIN ETH_MspInit 0 */
+// /**
+//   * @brief ETH MSP              ethernetif_input(&gnetif);
+//              /* Handle timeouts */
+//              sys_check_timeouts();
+// #if LWIP_NETIF_LINK_CALLBACK
+//              Ethernet_Link_Periodic_Handle(&gnetif);
+// #endif
+// #if LWIP_DHCP
+//              DHCP_Periodic_Handle(&gnetif);
+// #endif
+//              /* USER CODE END WHILE */
 
-    /* USER CODE END ETH_MspInit 0 */
-    /* Peripheral clock enable */
-    __HAL_RCC_ETH_CLK_ENABLE();
-    __HAL_RCC_ETHTX_CLK_ENABLE();
-    __HAL_RCC_ETHRX_CLK_ENABLE();
+//     /* USER CODE BEGIN 3 */
+//   }
+//   /* USER CODE END 3 */
+// }
+// Initialization
+//   * This function configures the hardware resources used in this example
+//   * @param heth: ETH handle pointer
+//   * @retval None
+//   */
+// void HAL_ETH_MspInit(ETH_HandleTypeDef* heth)
+// {
+//   GPIO_InitTypeDef GPIO_InitStruct = {0};
+//   if(heth->Instance==ETH)
+//   {
+//     /* USER CODE BEGIN ETH_MspInit 0 */
 
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**ETH GPIO Configuration
-    PC1     ------> ETH_MDC
-    PA1     ------> ETH_REF_CLK
-    PA2     ------> ETH_MDIO
-    PA5     ------> ETH_TX_EN
-    PA7     ------> ETH_CRS_DV
-    PC4     ------> ETH_RXD0
-    PC5     ------> ETH_RXD1
-    PB12     ------> ETH_TXD0
-    PB15     ------> ETH_TXD1
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_4|GPIO_PIN_5;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+//     /* USER CODE END ETH_MspInit 0 */
+//     /* Peripheral clock enable */
+//     __HAL_RCC_ETH_CLK_ENABLE();
+//     __HAL_RCC_ETHTX_CLK_ENABLE();
+//     __HAL_RCC_ETHRX_CLK_ENABLE();
 
-    GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_5|GPIO_PIN_7;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+//     __HAL_RCC_GPIOC_CLK_ENABLE();
+//     __HAL_RCC_GPIOA_CLK_ENABLE();
+//     __HAL_RCC_GPIOB_CLK_ENABLE();
+//     /**ETH GPIO Configuration
+//     PC1     ------> ETH_MDC
+//     PA1     ------> ETH_REF_CLK
+//     PA2     ------> ETH_MDIO
+//     PA5     ------> ETH_TX_EN
+//     PA7     ------> ETH_CRS_DV
+//     PC4     ------> ETH_RXD0
+//     PC5     ------> ETH_RXD1
+//     PB12     ------> ETH_TXD0
+//     PB15     ------> ETH_TXD1
+//     */
+//     GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_4|GPIO_PIN_5;
+//     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//     GPIO_InitStruct.Pull = GPIO_NOPULL;
+//     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+//     GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+//     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_15;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+//     GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_5|GPIO_PIN_7;
+//     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//     GPIO_InitStruct.Pull = GPIO_NOPULL;
+//     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+//     GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+//     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    /* USER CODE BEGIN ETH_MspInit 1 */
+//     GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_15;
+//     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+//     GPIO_InitStruct.Pull = GPIO_NOPULL;
+//     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+//     GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+//     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-    /* USER CODE END ETH_MspInit 1 */
+//     /* USER CODE BEGIN ETH_MspInit 1 */
 
-  }
+//     /* USER CODE END ETH_MspInit 1 */
 
-}
-#endif  // HAL_ETH_MspInit is defined in ethernetif.c
+//   }
+
+// }
 
 /**
   * @brief ETH MSP De-Initialization
