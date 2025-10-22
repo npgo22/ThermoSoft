@@ -40,6 +40,9 @@ add_subdirectory(cmake/stm32cubemx)
 # Add lwIP middleware
 add_subdirectory(lwip)
 
+# Add MAX31856 library
+add_subdirectory(MAX31856)
+
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
@@ -56,6 +59,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/lwip/target
     ${CMAKE_SOURCE_DIR}/src/include
     ${CMAKE_SOURCE_DIR}/system
+    ${CMAKE_SOURCE_DIR}/MAX31856/max31856
     # Add user defined include paths
 )
 
@@ -71,6 +75,7 @@ list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
     lwip_middleware
+    max31856_lib
 
     # Add user defined libraries
 )

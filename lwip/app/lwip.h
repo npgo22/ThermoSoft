@@ -1,5 +1,13 @@
 #include "lwip/netif.h"
 
+/* Debug LED pins */
+#define LED_GREEN_GPIO_Port  GPIOC
+#define LED_GREEN_Pin        GPIO_PIN_7
+#define LED_YELLOW_GPIO_Port GPIOC
+#define LED_YELLOW_Pin       GPIO_PIN_8
+#define LED_RED_GPIO_Port    GPIOC
+#define LED_RED_Pin          GPIO_PIN_9
+
 /* MAC ADDRESS: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
 #define ETH_MAC_ADDR0   ((uint8_t) 0x02U)
 #define ETH_MAC_ADDR1   ((uint8_t) 0x00U)
@@ -21,7 +29,7 @@
 /*Gateway Address*/
 #define GW_ADDR0   ((uint8_t) 198U)
 #define GW_ADDR1   ((uint8_t) 162U)
-#define GW_ADDR2   ((uint8_t) 0U)
+#define GW_ADDR2   ((uint8_t) 1U)
 #define GW_ADDR3   ((uint8_t) 1U)
 void ethernet_link_status_updated(struct netif *netif);
 void Ethernet_Link_Periodic_Handle(struct netif *netif);

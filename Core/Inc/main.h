@@ -61,6 +61,14 @@ void MX_ETH_Init(void);
 
 /* USER CODE BEGIN Private defines */
 
+#define LED_LINK_UP_GPIO_Port  GPIOC
+#define LED_LINK_UP_Pin        GPIO_PIN_7
+
+// Not used at this time
+// #define LED_YELLOW_GPIO_Port GPIOC
+// #define LED_YELLOW_Pin       GPIO_PIN_8
+// #define LED_RED_GPIO_Port    GPIOC
+// #define LED_RED_Pin          GPIO_PIN_9
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

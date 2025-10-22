@@ -1,0 +1,3 @@
+[submodule "MAX31856/max31856"]
+	path = MAX31856/max31856
+	url = https://github.com/cankocak/max31856.git

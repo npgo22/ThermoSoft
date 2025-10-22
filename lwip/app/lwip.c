@@ -9,7 +9,9 @@
 #include "lwip/debug.h"
 #include "lwip/stats.h"
 #include "lwip/tcp.h"
+#if LWIP_DHCP
 #include "lwip/dhcp.h"
+#endif
 #include <string.h>
 #include "main.h"
 
@@ -29,6 +31,7 @@ uint8_t DHCP_state = DHCP_OFF;
 
 void ethernet_link_status_updated(struct netif *netif)
 {
+#if LWIP_DHCP
   if (netif_is_link_up(netif))
  {
     /* Update DHCP state machine */
@@ -39,6 +42,16 @@ void ethernet_link_status_updated(struct netif *netif)
     /* Update DHCP state machine */
     DHCP_state = DHCP_LINK_DOWN;
   }
+#else
+  if (netif_is_link_up(netif))
+  {
+    HAL_GPIO_WritePin(LED_LINK_UP_GPIO_Port, LED_LINK_UP_Pin, GPIO_PIN_SET);
+  }
+  else
+  {
+    HAL_GPIO_WritePin(LED_LINK_UP_GPIO_Port, LED_LINK_UP_Pin, GPIO_PIN_RESET);
+  }
+#endif
 }
 
 #if LWIP_NETIF_LINK_CALLBACK
@@ -75,8 +88,8 @@ void DHCP_Process(struct netif *netif)
     case DHCP_START:
     {
              printf("State: Looking for DHCP server ...\n");
-             // HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-             // HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
+             HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+             HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
       ip_addr_set_zero_ip4(&netif->ip_addr);
       ip_addr_set_zero_ip4(&netif->netmask);
       ip_addr_set_zero_ip4(&netif->gw);
@@ -89,8 +102,8 @@ void DHCP_Process(struct netif *netif)
       if (dhcp_supplied_address(netif))
       {
         DHCP_state = DHCP_ADDRESS_ASSIGNED;
-             // HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-             // HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
+             HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+             HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
         char ip_str[16];
         ip4_addr_set_u32(&ipaddr, netif_ip4_addr(netif)->addr);
         ip4addr_ntoa_r(&ipaddr, ip_str, sizeof(ip_str));
@@ -112,10 +125,10 @@ void DHCP_Process(struct netif *netif)
           ip4addr_ntoa_r(&ipaddr, ip_str, sizeof(ip_str));
                    printf("DHCP Timeout !! \n");
                    printf("Static IP address: %s\n", ip_str);
-                   // HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin,
-                   //              GPIO_PIN_SET);
-                   // HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin,
-                   //              GPIO_PIN_RESET);
+                   HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin,
+                                GPIO_PIN_SET);
+                   HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin,
+                                GPIO_PIN_RESET);
         }
       }
     }
@@ -123,8 +136,8 @@ void DHCP_Process(struct netif *netif)
   case DHCP_LINK_DOWN:
     {
       DHCP_state = DHCP_OFF;
-             // HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
-             // HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
+             HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+             HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
     }
     break;
   default: break;

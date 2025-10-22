@@ -597,7 +597,9 @@ static void Netif_Config(void) {
       netif_set_default(&gnetif);
 #if LWIP_NETIF_LINK_CALLBACK
       netif_set_link_callback(&gnetif, ethernet_link_status_updated);
+#if LWIP_DHCP
       dhcp_start(&gnetif);
+#endif
       ethernet_link_status_updated(&gnetif);
 #endif
 }
