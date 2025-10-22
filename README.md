@@ -1,6 +1,6 @@
 # ThermoBoard DAQ Upgrade Software
 
-This is the software for 
+This is the software for APRL's Thermocouple DAQ Board.
 
 ## Status
 
