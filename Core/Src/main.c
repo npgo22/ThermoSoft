@@ -327,10 +327,17 @@ int main(void)
     if ((HAL_GetTick() - last_send_time) >= UDP_SEND_INTERVAL_MS) {
       if (netif_is_up(&gnetif)) {
         // Read all sensors and store in current batch position
-        Read_MAX31856_Sensor(&therm1, &sensor_packet.tc1_temps[batch_index]);
-        Read_MAX31856_Sensor(&therm2, &sensor_packet.tc2_temps[batch_index]);
-        Read_MAX31856_Sensor(&therm3, &sensor_packet.tc3_temps[batch_index]);
-        Read_MAX31856_Sensor(&therm4, &sensor_packet.tc4_temps[batch_index]);
+        // Use temporary variables to avoid taking address of packed members
+        float temp1, temp2, temp3, temp4;
+        Read_MAX31856_Sensor(&therm1, &temp1);
+        Read_MAX31856_Sensor(&therm2, &temp2);
+        Read_MAX31856_Sensor(&therm3, &temp3);
+        Read_MAX31856_Sensor(&therm4, &temp4);
+        
+        sensor_packet.tc1_temps[batch_index] = temp1;
+        sensor_packet.tc2_temps[batch_index] = temp2;
+        sensor_packet.tc3_temps[batch_index] = temp3;
+        sensor_packet.tc4_temps[batch_index] = temp4;
 
         batch_index++;
 
