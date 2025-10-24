@@ -221,6 +221,9 @@ static void Send_Sensor_Data_UDP(void)
 {
   struct pbuf *p;
 
+  // Turn on LED to indicate data send
+  HAL_GPIO_WritePin(DATA_SEND_GPIO_Port, DATA_SEND_GPIO_Pin, GPIO_PIN_SET);
+
   // Set packet tag and timestamp
   sensor_packet.packetTag = PACKET_ID;
   sensor_packet.packetTime = HAL_GetTick();
@@ -228,6 +231,7 @@ static void Send_Sensor_Data_UDP(void)
   // Allocate pbuf for data
   p = pbuf_alloc(PBUF_TRANSPORT, sizeof(sensor_data_packet_t), PBUF_RAM);
   if (p == NULL) {
+    HAL_GPIO_WritePin(DATA_SEND_GPIO_Port, DATA_SEND_GPIO_Pin, GPIO_PIN_RESET);
     return;
   }
 
@@ -243,6 +247,9 @@ static void Send_Sensor_Data_UDP(void)
   if (err != ERR_OK) {
     // Handle send error
   }
+
+  // Turn off LED after send
+  HAL_GPIO_WritePin(DATA_SEND_GPIO_Port, DATA_SEND_GPIO_Pin, GPIO_PIN_RESET);
 
   // Reset batch index for next packet
   batch_index = 0;
