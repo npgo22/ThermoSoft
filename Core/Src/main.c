@@ -192,12 +192,12 @@ static void Init_UDP_Socket(void)
   }
 }
 
-static void Read_MAX31856_Sensor(max31856_t *sensor, float *temp_value)
+static void Read_MAX31856_Sensor(max31856_t *sensor, int32_t *temp_value)
 {
   // Check if data is ready (DRDY pin is active low)
   if (HAL_GPIO_ReadPin(sensor->drdy_pin.gpio_port, sensor->drdy_pin.gpio_pin) != GPIO_PIN_RESET) {
     // Data not ready - return previous value or 0.0
-    *temp_value = 0.0f;
+    *temp_value = 0;
     return;
   }
 
@@ -335,7 +335,7 @@ int main(void)
       if (netif_is_up(&gnetif)) {
         // Read all sensors and store in current batch position
         // Use temporary variables to avoid taking address of packed members
-        float temp1, temp2, temp3, temp4;
+        int32_t temp1, temp2, temp3, temp4;
         Read_MAX31856_Sensor(&therm1, &temp1);
         Read_MAX31856_Sensor(&therm2, &temp2);
         Read_MAX31856_Sensor(&therm3, &temp3);
