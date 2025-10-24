@@ -73,20 +73,14 @@ void MX_ETH_Init(void);
 #define SENSOR_COUNT 4  // Number of thermocouple sensors
 #define BATCH_SIZE   10 // Number of reading sets per packet
 
-// Packed structure for individual thermocouple reading (legacy)
-typedef struct __attribute__((packed)) {
-  uint32_t timestamp;
-  float tc_temp;
-} thermocouple_reading_t;
-
 // Packed structure for batched sensor data packet
 typedef struct __attribute__((packed)) {
-  uint32_t packetTag;          // Packet identifier
-  float tc1_temps[BATCH_SIZE]; // Thermocouple 1 temperature batch
-  float tc2_temps[BATCH_SIZE]; // Thermocouple 2 temperature batch
-  float tc3_temps[BATCH_SIZE]; // Thermocouple 3 temperature batch
-  float tc4_temps[BATCH_SIZE]; // Thermocouple 4 temperature batch
-  uint32_t packetTime;         // Timestamp when packet was sent
+  uint32_t packetTag;            // Packet identifier
+  int32_t tc1_temps[BATCH_SIZE]; // Thermocouple 1 temperature batch
+  int32_t tc2_temps[BATCH_SIZE]; // Thermocouple 2 temperature batch
+  int32_t tc3_temps[BATCH_SIZE]; // Thermocouple 3 temperature batch
+  int32_t tc4_temps[BATCH_SIZE]; // Thermocouple 4 temperature batch
+  uint32_t packetTime;           // Timestamp when packet was sent
 } sensor_data_packet_t;
 
 // Packet identifier for COSMOS/receiver
