@@ -10,6 +10,8 @@ It currently follows their example, with LED pin PC7 to represent link status. D
 
 Currently, CMake is used.
 
+## LEDs
+PC7 denotes link status. PC8 denotes data being sent over Ethernet. PC9 will turn off if data fails to send for whatever reason.
 
 ## TODO
 | Feature | Implemented? | Needed for hotfire? | Notes |
