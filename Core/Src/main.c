@@ -245,7 +245,11 @@ static void Send_Sensor_Data_UDP(void)
   pbuf_free(p);
 
   if (err != ERR_OK) {
-    // Handle send error
+    // Handle send error - turn on fail LED
+    HAL_GPIO_WritePin(DATA_FAIL_GPIO_Port, DATA_FAIL_GPIO_Pin, GPIO_PIN_SET);
+  } else {
+    // Success - turn off fail LED
+    HAL_GPIO_WritePin(DATA_FAIL_GPIO_Port, DATA_FAIL_GPIO_Pin, GPIO_PIN_RESET);
   }
 
   // Turn off LED after send

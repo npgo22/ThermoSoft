@@ -99,6 +99,9 @@ typedef struct __attribute__((packed)) {
 // Data send status (as in, turns on when stuff is being sent)
 #define DATA_SEND_GPIO_Port GPIOC
 #define DATA_SEND_GPIO_Pin  GPIO_PIN_8
+// For failure
+#define DATA_FAIL_GPIO_Port GPIOC
+#define DATA_FAIL_GPIO_Pin  GPIO_PIN_9
 
 // Ethernet PHY Reset
 #define ETH_PHY_RESET_Port GPIOA
