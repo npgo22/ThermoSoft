@@ -318,19 +318,8 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
-    //     /* Read a received packet from the Ethernet buffers and send it
-    //      to the lwIP for handling */
-    //     ethernetif_input(&gnetif);
-    //     /* Handle timeouts */
-    //     sys_check_timeouts();
-    // #if LWIP_NETIF_LINK_CALLBACK
-    //     Ethernet_Link_Periodic_Handle(&gnetif);
-    // #endif
-    // #if LWIP_DHCP
-    //     DHCP_Periodic_Handle(&gnetif);
-    // #endif
     /* Read a received packet from the Ethernet buffers and send it
-     to the lwIP for handling */
+      to the lwIP for handling */
     ethernetif_input(&gnetif);
     /* Handle timeouts */
     sys_check_timeouts();
