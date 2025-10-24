@@ -194,6 +194,13 @@ static void Init_UDP_Socket(void)
 
 static void Read_MAX31856_Sensor(max31856_t *sensor, float *temp_value)
 {
+  // Check if data is ready (DRDY pin is active low)
+  if (HAL_GPIO_ReadPin(sensor->drdy_pin.gpio_port, sensor->drdy_pin.gpio_pin) != GPIO_PIN_RESET) {
+    // Data not ready - return previous value or 0.0
+    *temp_value = 0.0f;
+    return;
+  }
+
   // Check for faults
   max31856_read_fault(sensor);
 
@@ -333,7 +340,7 @@ int main(void)
         Read_MAX31856_Sensor(&therm2, &temp2);
         Read_MAX31856_Sensor(&therm3, &temp3);
         Read_MAX31856_Sensor(&therm4, &temp4);
-        
+
         sensor_packet.tc1_temps[batch_index] = temp1;
         sensor_packet.tc2_temps[batch_index] = temp2;
         sensor_packet.tc3_temps[batch_index] = temp3;
