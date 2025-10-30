@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32h5xx_hal.h"
 #include "string.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -299,6 +300,13 @@ int main(void)
   MX_DCACHE1_Init();
   MX_FMAC_Init();
   /* USER CODE BEGIN 2 */
+
+  // Reset PHY (nRST) - MUST be done BEFORE lwip_init
+  // LAN8742 nRST is active LOW
+  HAL_GPIO_WritePin(ETH_PHY_RESET_Port, ETH_PHY_RESET_Pin, GPIO_PIN_RESET); // Assert reset (LOW)
+  HAL_Delay(100);  // Hold reset for 100ms
+  HAL_GPIO_WritePin(ETH_PHY_RESET_Port, ETH_PHY_RESET_Pin, GPIO_PIN_SET);   // Release reset (HIGH)
+  HAL_Delay(100);  // Wait for PHY to stabilize
 
   lwip_init();
   Netif_Config();
