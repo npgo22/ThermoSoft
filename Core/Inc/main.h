@@ -99,7 +99,7 @@ typedef struct __attribute__((packed)) {
 
 // Ethernet PHY Reset
 #define ETH_PHY_RESET_Port GPIOA
-#define ETH_PHY_RESET_Pin  GPIO_PIN_5
+#define ETH_PHY_RESET_Pin  GPIO_PIN_0
 
 // MAX31856 #1
 #define NDRDY1_Port  GPIOC
