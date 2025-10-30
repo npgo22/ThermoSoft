@@ -227,6 +227,14 @@ conversions are taking place.
 #define UDP_DEST_PORT        5000
 #define UDP_SEND_INTERVAL_MS 100
 
+// MAC Address Configuration
+#define MAC_ADDR0 0x00
+#define MAC_ADDR1 0x80
+#define MAC_ADDR2 0xE1
+#define MAC_ADDR3 0x00
+#define MAC_ADDR4 0x00
+#define MAC_ADDR5 0x00
+
 #ifdef __cplusplus
 }
 #endif
